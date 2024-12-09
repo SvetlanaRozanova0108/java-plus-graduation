@@ -8897,7 +8897,7 @@
 													"        compilation = rnd.getCompilation(event.id, event2.id);\r",
 													"        compilation2 = rnd.getCompilation(event.id, event2.id);\r",
 													"        await pm.sendRequest({\r",
-													"            url : \"http://localhost:8080/admin/compilations/\",\r",
+													"            url : \"http://localhost:8080/admin/compilations\",\r",
 													"            method : \"POST\",\r",
 													"            header: { \"Content-Type\": \"application/json\" },\r",
 													"            body: JSON.stringify({\r",
