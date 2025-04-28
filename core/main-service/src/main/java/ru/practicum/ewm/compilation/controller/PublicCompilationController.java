@@ -19,13 +19,24 @@ public class PublicCompilationController {
     public List<CompilationDto> getAllCompilations(@RequestParam(required = false) Boolean pinned,
                                                    @RequestParam(defaultValue = "0") Integer from,
                                                    @RequestParam(defaultValue = "10") Integer size) {
-        log.info("Поступил запрос на получение всех подборок событий");
-        return compilationService.getAllCompilations(pinned, from, size);
+        try {
+            log.info("Поступил запрос на получение всех подборок событий");
+            return compilationService.getAllCompilations(pinned, from, size);
+        } catch (Exception e) {
+            log.error("getAllCompilations Ошибка: " + e);
+            throw e;
+        }
+
     }
 
     @GetMapping("/{compId}")
     public CompilationDto getCompilationById(@PathVariable Long compId) {
-        log.info("Поступил запрос на получение подборки событий по id");
-        return compilationService.getCompilationById(compId);
+        try {
+            log.info("Поступил запрос на получение подборки событий по id");
+            return compilationService.getCompilationById(compId);
+        } catch (Exception e) {
+            log.error("getCompilationById Ошибка: " + e);
+            throw e;
+        }
     }
 }

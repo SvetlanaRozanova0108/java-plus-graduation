@@ -24,8 +24,13 @@ public class StatsController {
     @ResponseStatus(HttpStatus.CREATED)
     public String saveHit(@RequestBody @Valid EndpointHitDto endpointHitDto) {
         log.info("На uri: {} сервиса был отправлен запрос пользователем.", endpointHitDto.getUri());
-        statsService.saveHit(endpointHitDto);
-        return "Информация сохранена";
+        try {
+            statsService.saveHit(endpointHitDto);
+            return "Информация сохранена";
+        } catch (Exception e) {
+            log.error("saveHit Ошибка: " + e);
+            throw e;
+        }
     }
 
     @GetMapping("/stats")
@@ -35,6 +40,12 @@ public class StatsController {
                                    @RequestParam(defaultValue = "false") boolean unique) {
         log.info("Поступил запрос на получение статистики запросов c параметрами start: {}, end {}, uris {}, unique {}",
                 start, end, uris, unique);
-        return statsService.getStats(start, end, uris, unique);
+        try {
+            return statsService.getStats(start, end, uris, unique);
+        } catch (Exception e) {
+            log.error("getStats Ошибка: " + e);
+            throw e;
+        }
+
     }
 }

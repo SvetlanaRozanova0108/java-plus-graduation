@@ -10,7 +10,6 @@ import ru.practicum.ewm.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.ewm.compilation.mapper.CompilationMapper;
 import ru.practicum.ewm.compilation.model.Compilation;
 import ru.practicum.ewm.compilation.repository.CompilationRepository;
-import ru.practicum.ewm.compilation.service.CompilationService;
 import ru.practicum.ewm.event.dto.EventShortDto;
 import ru.practicum.ewm.event.mapper.EventMapper;
 import ru.practicum.ewm.event.model.Event;
@@ -88,9 +87,14 @@ public class CompilationServiceImpl implements CompilationService {
         } else {
             allCompilations = compilationRepository.findAllByPinned(pageRequest, pinned);
         }
-        Map<Long, EventShortDto> allEventDto = mapToEventShort(allCompilations.stream()
-                .flatMap(compilation -> compilation.getEvents().stream()).toList())
-                .stream().collect(Collectors.toMap(EventShortDto::getId, Function.identity()));
+        Map<Long, EventShortDto> allEventDto = new HashMap<>();
+        mapToEventShort(allCompilations.stream()
+                .flatMap(compilation -> compilation.getEvents().stream()).toList()).stream()
+                .toList().forEach(event -> {
+                    if (!allEventDto.containsKey(event.getId())) {
+                        allEventDto.put(event.getId(), event);
+                    }
+                });
         List<CompilationDto> compilationDtoList = new ArrayList<>();
         for (Compilation compilation : allCompilations) {
             List<EventShortDto> listEventDto = compilation.getEvents().stream().map(event -> allEventDto.get(event.getId()))
@@ -98,7 +102,6 @@ public class CompilationServiceImpl implements CompilationService {
             compilationDtoList.add(CompilationMapper.toCompilationDto(compilation, listEventDto));
         }
         return compilationDtoList;
-
     }
 
     @Override
@@ -122,7 +125,7 @@ public class CompilationServiceImpl implements CompilationService {
         }
         LocalDateTime minTime = events.stream().map(Event::getCreatedOn).min(Comparator.comparing(Function.identity())).get();
         List<String> urisList = events.stream().map(event -> "/events/" + event.getId()).toList();
-//        String uris = String.join(", ", urisList);
+
         List<StatsDto> statsList = statClient.getStats(minTime.minusSeconds(1), LocalDateTime.now(), urisList, false);
         return events.stream().map(event -> {
                     Optional<StatsDto> result = statsList.stream()
