@@ -32,12 +32,12 @@ spring:
         - id: public_comment
           uri: lb://main-service
           predicates:
-            - Path=//comments/**
+            - Path=/comments/**
 
         - id: admin_compilation
           uri: lb://main-service
           predicates:
-            - Path=//admin/compilations/**
+            - Path=/admin/compilations/**
 
         - id: public_compilation
           uri: lb://main-service
