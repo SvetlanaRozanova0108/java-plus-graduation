@@ -20,5 +20,4 @@ spring:
     username: main
     password: main
 
-statsServiceId: stats-server
 ewmServiceName: ewm-service

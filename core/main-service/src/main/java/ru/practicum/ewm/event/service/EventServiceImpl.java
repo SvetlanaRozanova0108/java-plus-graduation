@@ -85,10 +85,10 @@ public class EventServiceImpl implements EventService {
                 .map(event -> "/events/" + event.getId())
                 .toList();
 
-        String uris = String.join(", ", urisList);
+//        String uris = String.join(", ", urisList);
 
         List<StatsDto> statsList = statClient.getStats(events.getFirst().getCreatedOn().minusSeconds(1),
-                LocalDateTime.now(), uris, false);
+                LocalDateTime.now(), urisList, false);
 
         return events.stream().map(event -> {
                     Optional<StatsDto> result = statsList.stream()
@@ -113,7 +113,7 @@ public class EventServiceImpl implements EventService {
             throw new ValidationException("Можно просмотреть только своё событие");
         }
         String uri = "/events/" + eventId;
-        List<StatsDto> statsList = statClient.getStats(event.getCreatedOn().minusSeconds(1), LocalDateTime.now(), uri,
+        List<StatsDto> statsList = statClient.getStats(event.getCreatedOn().minusSeconds(1), LocalDateTime.now(), List.of(uri),
                 false);
         Optional<StatsDto> result = statsList.stream().findFirst();
         if (result.isPresent()) {
@@ -224,10 +224,10 @@ public class EventServiceImpl implements EventService {
                 .map(event -> "/events/" + event.getId())
                 .toList();
 
-        String uris = String.join(", ", urisList);
+//        String uris = String.join(", ", urisList);
 
         List<StatsDto> statsList = statClient.getStats(events.getFirst().getCreatedOn().minusSeconds(1),
-                LocalDateTime.now(), uris, false);
+                LocalDateTime.now(), urisList, false);
 
         List<EventShortDto> result = events.stream().map(event -> {
 
@@ -281,7 +281,7 @@ public class EventServiceImpl implements EventService {
 
 
         Optional<StatsDto> stat = statClient.getStats(event.getCreatedOn().minusSeconds(1),
-                        LocalDateTime.now(), "/events/" + event.getId(), true).stream().findFirst();
+                        LocalDateTime.now(), List.of("/events/" + event.getId()), true).stream().findFirst();
 
         EventFullDto result = EventMapper.mapToFullDto(event, stat.isPresent() ? stat.get().getHits() : 0L);
 
@@ -337,7 +337,7 @@ public class EventServiceImpl implements EventService {
         String uris = String.join(", ", urisList);
 
         List<StatsDto> statsList = statClient.getStats(events.getFirst().getCreatedOn().minusSeconds(1),
-                LocalDateTime.now(), uris, false);
+                LocalDateTime.now(), urisList, false);
         var ids = events.stream().map(Event::getId).toList();
         Map<Long, List<ParticipationRequest>> confirmedRequests = requestService.prepareConfirmedRequests(ids);
 
@@ -413,7 +413,7 @@ public class EventServiceImpl implements EventService {
         event = eventRepository.save(event);
 
         Optional<StatsDto> stat = statClient.getStats(event.getCreatedOn().minusSeconds(1), LocalDateTime.now(),
-                        "/events/" + event.getId(), false).stream().findFirst();
+                        List.of("/events/" + event.getId()), false).stream().findFirst();
 
         EventFullDto result = EventMapper.mapToFullDto(event, stat.isPresent() ? stat.get().getHits() : 0L);
 
