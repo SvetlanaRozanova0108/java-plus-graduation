@@ -1,7 +1,6 @@
 package ru.practicum.request.service.mapper;
 
 import lombok.experimental.UtilityClass;
-import main.java.api.dto.request.ParticipationRequestDto;
 import ru.practicum.request.service.model.ParticipationRequest;
 
 import java.util.List;

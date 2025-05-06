@@ -1,14 +1,10 @@
 package ru.practicum.event.service.event.mapper;
 
 import lombok.experimental.UtilityClass;
-import main.java.api.dto.event.EventFullDto;
-import main.java.api.dto.event.EventShortDto;
-import main.java.api.dto.event.Location;
-import main.java.api.dto.event.NewEventDto;
+import org.apache.sshd.common.util.closeable.AbstractCloseable;
 import ru.practicum.event.service.category.mapper.CategoryMapper;
 import ru.practicum.event.service.category.model.Category;
 import ru.practicum.event.service.event.model.Event;
-import main.java.api.enums.event.State;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +20,7 @@ public class EventMapper {
                 .confirmedRequests(0)
                 .createdOn(LocalDateTime.now())
                 .description(eventDto.getDescription())
-                .state(State.PENDING)
+                .state(AbstractCloseable.State.PENDING)
                 .title(eventDto.getTitle())
                 .lat(eventDto.getLocation().getLat())
                 .lon(eventDto.getLocation().getLon())

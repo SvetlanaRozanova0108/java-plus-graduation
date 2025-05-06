@@ -3,13 +3,10 @@ package ru.practicum.event.service.category.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import api.dto.category.CategoryDto;
-import main.java.api.dto.category.NewCategoryDto;
 import ru.practicum.event.service.category.service.CategoryService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.exception.DuplicateException;
 
 @RestController
 @RequiredArgsConstructor

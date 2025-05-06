@@ -20,13 +20,6 @@ import ru.practicum.event.service.event.model.Event;
 import ru.practicum.event.service.event.repository.EventRepository;
 import ru.practicum.ewm.stats.dto.EndpointHitDto;
 import ru.practicum.ewm.stats.dto.StatsDto;
-import main.java.api.dto.request.ParticipationRequestDto;
-import main.java.api.dto.user.UserDto;
-import main.java.api.enums.request.Status;
-import main.java.api.feignClient.client.request.AdminParticipationRequestClient;
-import main.java.api.feignClient.client.request.ParticipationRequestClient;
-import main.java.api.feignClient.client.stat.StatClient;
-import main.java.api.feignClient.client.user.UserClient;
 
 import java.time.LocalDateTime;
 import java.util.*;

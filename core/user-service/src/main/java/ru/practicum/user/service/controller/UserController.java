@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.user.NewUserRequest;
-import main.java.api.dto.user.UserDto;
-import main.java.api.dto.user.UserDtoForAdmin;
 import ru.practicum.user.service.service.UserService;
 
 import java.util.List;
@@ -46,11 +43,6 @@ public class UserController {
     public UserDto findById(@PathVariable Long userId) {
         return userService.findById(userId);
     }
-
-//    @GetMapping("/{userId}")
-//    Boolean existsById(@PathVariable Long userId) {
-//        return userService.existsById(userId);
-//    }
 
     @GetMapping("/admin/{userId}")
     public UserDtoForAdmin adminFindById(@PathVariable Long userId) {

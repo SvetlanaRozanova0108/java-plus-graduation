@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import main.java.api.enums.request.Status;
 import java.time.LocalDateTime;
 
 @Entity

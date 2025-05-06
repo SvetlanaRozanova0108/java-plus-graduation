@@ -77,6 +77,7 @@
             <artifactId>interaction-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>ru.practicum</groupId>
             <artifactId>user-service</artifactId>
@@ -89,12 +90,14 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>ru.practicum</groupId>
             <artifactId>request-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
     <build>

@@ -1,7 +1,5 @@
 package ru.practicum.request.service.service;
 
-import main.java.api.dto.request.ParticipationRequestDto;
-import main.java.api.enums.request.Status;
 import ru.practicum.request.service.model.ParticipationRequest;
 
 import java.util.List;

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.service.category.service.CategoryService;
-import api.dto.category.CategoryDto;
 
 import java.util.List;
 

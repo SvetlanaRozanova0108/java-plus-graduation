@@ -1,6 +1,6 @@
 package ru.practicum.user.service.service;
 
-import main.java.api.dto.user.NewUserRequest;
+import main.java.ru.practicum.interaction.api.dto.user.NewUserRequest;
 import main.java.api.dto.user.UserDto;
 import main.java.api.dto.user.UserDtoForAdmin;
 

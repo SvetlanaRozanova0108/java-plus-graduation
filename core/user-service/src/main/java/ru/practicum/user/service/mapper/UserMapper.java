@@ -1,10 +1,6 @@
 package ru.practicum.user.service.mapper;
 
 import lombok.experimental.UtilityClass;
-import main.java.api.dto.user.NewUserRequest;
-import main.java.api.dto.user.UserDto;
-import main.java.api.dto.user.UserDtoForAdmin;
-import main.java.api.dto.user.UserShortDto;
 import ru.practicum.user.service.model.User;
 
 @UtilityClass
