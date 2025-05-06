@@ -126,5 +126,42 @@ services:
       interval: 10s
       retries: 15
 
-networks:
-  ewm-net:
+  user-db:
+    image: postgres:16.1
+    container_name: postgres-user-service-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=user
+      - POSTGRES_USER=user
+      - POSTGRES_DB=user-db
+
+  event-db:
+    image: postgres:16.1
+    container_name: postgres-event-service-db
+    ports:
+      - "4432:5432"
+    environment:
+      - POSTGRES_PASSWORD=event
+      - POSTGRES_USER=event
+      - POSTGRES_DB=event-db
+
+  request-db:
+    image: postgres:16.1
+    container_name: postgres-request-service-db
+    ports:
+      - "3432:5432"
+    environment:
+      - POSTGRES_PASSWORD=request
+      - POSTGRES_USER=request
+      - POSTGRES_DB=request-db
+
+  comment-db:
+    image: postgres:16.1
+    container_name: postgres-comment-service-db
+    ports:
+      - "2432:5432"
+    environment:
+      - POSTGRES_PASSWORD=comment
+      - POSTGRES_USER=comment
+      - POSTGRES_DB=comment-db

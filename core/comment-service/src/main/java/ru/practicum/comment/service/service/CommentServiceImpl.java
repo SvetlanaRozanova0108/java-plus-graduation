@@ -1,0 +1,228 @@
+package ru.practicum.comment.service.service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import main.java.api.dto.user.UserDto;
+import main.java.api.dto.user.UserDtoForAdmin;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.comment.service.mapper.CommentMapper;
+import ru.practicum.comment.service.model.Comment;
+import ru.practicum.comment.service.repository.BanCommentRepository;
+import ru.practicum.comment.service.repository.CommentRepository;
+import main.java.api.dto.comment.CommentDto;
+import main.java.api.dto.comment.NewCommentDto;
+import main.java.api.dto.event.EventFullDto;
+import main.java.api.enums.comment.SortType;
+import main.java.api.enums.event.State;
+import main.java.api.exception.NotFoundException;
+import main.java.api.exception.ValidationException;
+import main.java.api.feignClient.client.comment.AdminCommentClient;
+import main.java.api.feignClient.client.event.AdminEventClient;
+import main.java.api.feignClient.client.event.PublicEventClient;
+import main.java.api.feignClient.client.user.UserClient;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Slf4j
+public class CommentServiceImpl implements CommentService {
+
+    private final CommentRepository commentRepository;
+    private final UserClient userClient;
+    private final PublicEventClient publicEventClient;
+    private final AdminEventClient adminEventClient;
+    private final AdminCommentClient commentClient;
+    private final BanCommentRepository banCommentRepository;
+
+    @Transactional
+    @Override
+    public CommentDto createComment(Long eventId, Long userId, NewCommentDto newCommentDto) {
+        checkEventId(eventId);
+        EventFullDto event = getEvent(eventId);
+        if (event.getState() != State.PUBLISHED) {
+            throw new ValidationException("Нельзя комментировать неопубликованное событие");
+        }
+        UserDto user = getUser(userId);
+        if (userClient.findById(userId)== null) {
+            throw new ValidationException("Для данного пользователя стоит запрет на комментирование данного события");
+        }
+        if (!event.getCommenting()) {
+            throw new ValidationException("Данное событие нельзя комментировать");
+        }
+        Comment comment = CommentMapper.toComment(newCommentDto, eventId, userId);
+        return CommentMapper.toCommentDto(commentRepository.save(comment),event.getAnnotation(),user.getName());
+    }
+
+    @Transactional
+    @Override
+    public CommentDto updateComment(Long userId, Long eventId, Long commentId, NewCommentDto newCommentDto) {
+        checkEventId(eventId);
+        UserDto user = getUser(userId);
+        EventFullDto event = getEvent(eventId);
+        if (userClient.findById(userId)==null) {
+            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+        }
+        if (adminEventClient.findById(eventId)==null) {
+            throw new NotFoundException("Событие не найдено");
+        }
+        Comment comment = checkComment(commentId);
+        if (!Objects.equals(comment.getEventId(), eventId)) {
+            throw new ValidationException("Некорректно указан eventId");
+        }
+        if (comment.getAuthorId().equals(userId)) {
+            comment.setText(newCommentDto.getText());
+        } else {
+            throw new ValidationException("Пользователь не оставлял комментарий с указанным Id " + commentId);
+        }
+        return CommentMapper.toCommentDto(comment,event.getAnnotation(), user.getName());
+    }
+
+    @Transactional
+    @Override
+    public void deleteComment(Long userId, Long eventId, Long commentId) {
+        checkEventId(eventId);
+        if (userClient.findById(userId)== null) {
+            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+        }
+        if (adminEventClient.findById(eventId)==null) {
+            throw new NotFoundException("Событие не найдено");
+        }
+        Comment comment = checkComment(commentId);
+        if (!Objects.equals(comment.getEventId(), eventId)) {
+            throw new ValidationException("Некорректно указан eventId");
+        }
+        if (comment.getAuthorId().equals(userId)) {
+            commentRepository.deleteById(commentId);
+        } else {
+            throw new ValidationException("Пользователь не оставлял комментарий с указанным Id " + commentId);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteComment(Long commentId, Long eventId) {
+        checkEventId(eventId);
+        Comment comment = checkComment(commentId);
+        if (!Objects.equals(comment.getEventId(), eventId)) {
+            throw new ValidationException("Некорректно указан eventId");
+        }
+        commentRepository.deleteById(commentId);
+    }
+
+    @Override
+    public List<CommentDto> getAllComments(Long eventId, SortType sortType, Integer from, Integer size) {
+        Pageable pageable = PageRequest.of(from / size, size);
+        List<CommentDto> comments = commentRepository.findAllByEventId(eventId, pageable)
+                .stream()
+                .map(CommentMapper::toCommentDto)
+                .toList();
+        if (sortType == SortType.LIKES) {
+            return comments
+                    .stream()
+                    .sorted(Comparator.comparing(CommentDto::getLikes).reversed()).toList();
+        } else {
+            return comments.stream().sorted(Comparator.comparing(CommentDto::getCreated).reversed()).toList();
+        }
+    }
+
+    @Transactional
+    @Override
+    public CommentDto addLike(Long userId, Long commentId) {
+        if (userClient.findById(userId)== null) {
+            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+        }
+        Comment comment = checkComment(commentId);
+        if (comment.getAuthorId().equals(userId)) {
+            throw new ValidationException("Пользователь не может лайкать свой комментарий");
+        }
+        if (!comment.getLikes().add(userId)) {
+            throw new ValidationException("Нельзя поставить лайк второй раз");
+        }
+        UserDto user = getUser(comment.getAuthorId());
+        EventFullDto event = getEvent(comment.getEventId());
+        return CommentMapper.toCommentDto(comment, event.getAnnotation(), user.getName());
+    }
+
+    @Transactional
+    @Override
+    public void deleteLike(Long userId, Long commentId) {
+        if (userClient.findById(userId)== null) {
+            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+        }
+        Comment comment = checkComment(commentId);
+        if (!comment.getLikes().remove(userId)) {
+            throw new NotFoundException("Пользователь не лайкал комментарий с id: " + commentId);
+        }
+    }
+
+    @Override
+    public CommentDto getComment(Long id) {
+        Comment comment = checkComment(id);
+        UserDto user = getUser(comment.getAuthorId());
+        EventFullDto event = getEvent(comment.getEventId());
+        return CommentMapper.toCommentDto(comment, event.getAnnotation(), user.getName());
+    }
+
+    @Transactional
+    @Override
+    public UserDtoForAdmin addBanCommited(Long userId, Long eventId) {
+        checkEventId(eventId);
+        if (checkExistForbiddenCommentEvents(userId, eventId)) {
+            throw new ValidationException("Уже добавлен такой запрет на комментирование");
+        }
+        addForbiddenCommentEvents(userId, eventId);
+        return userClient.adminFindById(userId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteBanCommited(Long userId, Long eventId) {
+        checkEventId(eventId);
+        if (!this.removeForbiddenCommentEvents(userId, eventId)) {
+            throw new NotFoundException("Такого запрета на комментирование не найдено");
+        }
+   }
+
+    private void addForbiddenCommentEvents(Long userId, Long eventId) {
+    }
+
+    private boolean removeForbiddenCommentEvents(Long userId, Long eventId) {
+        var comment = banCommentRepository.findByUserIdAndEventId(userId, eventId);
+        if (comment == null) {
+            return false;
+        }
+        banCommentRepository.deleteById(comment.getId());
+        return true;
+    }
+
+    private boolean checkExistForbiddenCommentEvents(Long userId, Long eventId) {
+        var comment = banCommentRepository.findByUserIdAndEventId(userId, eventId);
+        return comment != null;
+    }
+
+    private UserDto getUser(Long userId) {
+        return userClient.findById(userId);
+    }
+
+    private EventFullDto getEvent(Long eventId) {
+        return adminEventClient.findById(eventId);
+    }
+
+    private Comment checkComment(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Комментарий не найден"));
+    }
+
+    private void checkEventId(Long eventId) {
+        if (eventId == 0) {
+            throw new ValidationException("Не задан eventId");
+        }
+    }
+}
