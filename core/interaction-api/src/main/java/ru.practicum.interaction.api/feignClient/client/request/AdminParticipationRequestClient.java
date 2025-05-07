@@ -2,8 +2,8 @@ package ru.practicum.interaction.api.feignClient.client.request;
 import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.request.ParticipationRequestDto;
-import main.java.api.enums.request.Status;
+import ru.practicum.interaction.api.enums.request.Status;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 import java.util.Map;

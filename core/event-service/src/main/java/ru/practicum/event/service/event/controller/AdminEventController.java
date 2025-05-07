@@ -8,17 +8,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.service.event.service.EventService;
-import main.java.api.UpdateObject;
-import main.java.api.dto.event.EventAdminFilter;
-import main.java.api.dto.event.EventFullDto;
-import main.java.api.dto.event.UpdateEventAdminRequest;
-import main.java.api.enums.event.State;
-import main.java.api.exception.InvalidDateTimeException;
+import ru.practicum.interaction.api.UpdateObject;
+import ru.practicum.interaction.api.dto.event.EventAdminFilter;
+import ru.practicum.interaction.api.dto.event.EventFullDto;
+import ru.practicum.interaction.api.dto.event.UpdateEventAdminRequest;
+import ru.practicum.interaction.api.enums.event.State;
+import ru.practicum.interaction.api.exception.InvalidDateTimeException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @Slf4j
 @AllArgsConstructor

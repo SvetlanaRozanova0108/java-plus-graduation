@@ -5,10 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import main.java.api.dto.event.*;
-import main.java.api.enums.event.State;
-import main.java.api.enums.event.StateAction;
-import main.java.api.exception.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -17,9 +13,34 @@ import ru.practicum.event.service.category.model.Category;
 import ru.practicum.event.service.category.repository.CategoryRepository;
 import ru.practicum.event.service.event.mapper.EventMapper;
 import ru.practicum.event.service.event.model.Event;
+import ru.practicum.event.service.event.model.QEvent;
 import ru.practicum.event.service.event.repository.EventRepository;
-import ru.practicum.ewm.stats.dto.EndpointHitDto;
-import ru.practicum.ewm.stats.dto.StatsDto;
+import ru.practicum.interaction.api.dto.stats.EndpointHitDto;
+import ru.practicum.interaction.api.dto.stats.StatsDto;
+import ru.practicum.interaction.api.dto.event.EventFullDto;
+import ru.practicum.interaction.api.dto.event.NewEventDto;
+import ru.practicum.interaction.api.dto.event.EventShortDto;
+import ru.practicum.interaction.api.dto.event.UpdateEventUserRequest;
+import ru.practicum.interaction.api.dto.event.EventPublicFilter;
+import ru.practicum.interaction.api.dto.event.EventAdminFilter;
+import ru.practicum.interaction.api.dto.event.UpdateEventAdminRequest;
+import ru.practicum.interaction.api.dto.event.EventRequestStatusUpdateResult;
+import ru.practicum.interaction.api.dto.event.EventRequestStatusUpdateRequest;
+import ru.practicum.interaction.api.dto.user.UserDto;
+import ru.practicum.interaction.api.enums.event.State;
+import ru.practicum.interaction.api.enums.event.StateAction;
+import ru.practicum.interaction.api.enums.request.Status;
+import ru.practicum.interaction.api.exception.ValidationException;
+import ru.practicum.interaction.api.exception.ConflictDataException;
+import ru.practicum.interaction.api.exception.SaveStatsException;
+import ru.practicum.interaction.api.exception.NotFoundRecordInBDException;
+import ru.practicum.interaction.api.exception.OperationFailedException;
+import ru.practicum.interaction.api.exception.InvalidDateTimeException;
+import ru.practicum.interaction.api.feignClient.client.request.AdminParticipationRequestClient;
+import ru.practicum.interaction.api.feignClient.client.request.ParticipationRequestClient;
+import ru.practicum.interaction.api.feignClient.client.stat.StatClient;
+import ru.practicum.interaction.api.feignClient.client.user.UserClient;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -294,7 +315,7 @@ public class EventServiceImpl implements EventService {
                     .and(QEvent.event.eventDate.before(input.getRangeEnd()));
         }
         if (input.getUsers() != null) {
-            conditions = conditions.and(QEvent.event.initiator.id.in(input.getUsers()));
+            conditions = conditions.and(QEvent.event.initiatorId.in(input.getUsers()));
         }
         if (input.getStates() != null) {
             conditions = conditions.and(QEvent.event.state.in(input.getStates()));

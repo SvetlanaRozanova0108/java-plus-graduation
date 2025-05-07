@@ -2,7 +2,7 @@ package ru.practicum.interaction.api.dto.event;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import main.java.api.enums.event.SortType;
+import ru.practicum.interaction.api.enums.event.SortType;
 
 import java.time.LocalDateTime;
 import java.util.List;

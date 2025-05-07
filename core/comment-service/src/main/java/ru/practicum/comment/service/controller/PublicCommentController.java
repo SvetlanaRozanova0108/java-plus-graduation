@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.comment.service.service.CommentService;
-import main.java.api.dto.comment.CommentDto;
-import main.java.api.enums.comment.SortType;
+import ru.practicum.interaction.api.dto.comment.CommentDto;
+import ru.practicum.interaction.api.enums.comment.SortType;
 
 import java.util.List;
 

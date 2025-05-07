@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.user.NewUserRequest;
-import main.java.api.dto.user.UserDto;
-import main.java.api.dto.user.UserDtoForAdmin;
+import ru.practicum.interaction.api.dto.user.NewUserRequest;
+import ru.practicum.interaction.api.dto.user.UserDto;
+import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
 
 import java.util.List;
 

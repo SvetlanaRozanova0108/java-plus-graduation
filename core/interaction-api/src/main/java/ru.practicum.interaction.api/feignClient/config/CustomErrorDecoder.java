@@ -2,11 +2,10 @@ package ru.practicum.interaction.api.feignClient.config;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import jakarta.ws.rs.NotFoundException;
-import main.java.api.exception.BadRequestException;
-import main.java.api.exception.ServerErrorException;
 import org.springframework.stereotype.Component;
-import ru.practicum.interaction.api.exception.*;
+import ru.practicum.interaction.api.exception.BadRequestException;
+import ru.practicum.interaction.api.exception.NotFoundException;
+import ru.practicum.interaction.api.exception.ServerErrorException;
 
 @Component
 public class CustomErrorDecoder implements ErrorDecoder {

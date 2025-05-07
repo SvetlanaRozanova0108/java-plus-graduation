@@ -3,8 +3,8 @@ import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.comment.CommentDto;
-import main.java.api.dto.user.UserDtoForAdmin;
+import ru.practicum.interaction.api.dto.comment.CommentDto;
+import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
 
 @FeignClient(name = "comment-service", path = "/admin/comments")
 public interface AdminCommentClient {

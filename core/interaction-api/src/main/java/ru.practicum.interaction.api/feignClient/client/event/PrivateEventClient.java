@@ -1,11 +1,11 @@
 package ru.practicum.interaction.api.feignClient.client.event;
 import feign.FeignException;
 import jakarta.validation.Valid;
-import main.java.api.dto.event.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.request.ParticipationRequestDto;
+import ru.practicum.interaction.api.dto.event.*;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 
@@ -34,6 +34,6 @@ public interface PrivateEventClient {
 
     @PatchMapping("/{eventId}/requests")
     EventRequestStatusUpdateResult updateRequestsStatus(@PathVariable Long userId, @PathVariable Long eventId,
-                                                               @Valid @RequestBody
-                                                               EventRequestStatusUpdateRequest updateRequest) throws FeignException;
+                                                        @Valid @RequestBody
+                                                        EventRequestStatusUpdateRequest updateRequest) throws FeignException;
 }

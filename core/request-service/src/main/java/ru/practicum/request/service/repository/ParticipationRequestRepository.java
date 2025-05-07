@@ -15,8 +15,6 @@ public interface ParticipationRequestRepository extends JpaRepository<Participat
 
     List<ParticipationRequest> findAllByRequesterId(Long requesterId);
 
-//    List<ParticipationRequest> findAllByEventInitiatorIdAndEventId(Long userId, Long eventId);
-
     @Query("select p from ParticipationRequest p where p.status = 'CONFIRMED' and p.eventId in ?1")
     List<ParticipationRequest> findConfirmedRequests(List<Long> ids);
 

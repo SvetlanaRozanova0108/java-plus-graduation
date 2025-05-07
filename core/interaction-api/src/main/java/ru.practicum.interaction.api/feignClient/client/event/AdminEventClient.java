@@ -2,19 +2,19 @@ package ru.practicum.interaction.api.feignClient.client.event;
 import feign.FeignException;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import main.java.api.dto.event.EventFullDto;
-import main.java.api.dto.event.UpdateEventAdminRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.UpdateObject;
-import main.java.api.enums.event.State;
+import ru.practicum.interaction.api.UpdateObject;
+import ru.practicum.interaction.api.dto.event.EventFullDto;
+import ru.practicum.interaction.api.dto.event.UpdateEventAdminRequest;
+import ru.practicum.interaction.api.enums.event.State;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @FeignClient(name = "event-service", path = "/admin/events")
 public interface AdminEventClient {

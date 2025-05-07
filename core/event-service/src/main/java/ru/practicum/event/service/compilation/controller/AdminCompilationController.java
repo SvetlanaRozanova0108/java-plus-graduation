@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.service.compilation.service.CompilationService;
-import main.java.api.dto.compilation.CompilationDto;
-import main.java.api.dto.compilation.NewCompilationDto;
-import main.java.api.dto.compilation.UpdateCompilationRequest;
+import ru.practicum.interaction.api.dto.compilation.CompilationDto;
+import ru.practicum.interaction.api.dto.compilation.NewCompilationDto;
+import ru.practicum.interaction.api.dto.compilation.UpdateCompilationRequest;
 
 @RestController
 @RequestMapping("/admin/compilations")

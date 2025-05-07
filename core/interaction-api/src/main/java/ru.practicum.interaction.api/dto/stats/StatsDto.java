@@ -1,4 +1,4 @@
-package ru.practicum.ewm.stats.dto;
+package ru.practicum.interaction.api.dto.stats;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -7,11 +7,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import main.java.api.enums.event.StateAction;
+import ru.practicum.interaction.api.enums.event.StateAction;
 
 import java.time.LocalDateTime;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor

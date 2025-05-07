@@ -1,4 +1,4 @@
-package ru.yandex.practicum.gatewayserver;
+package ru.practicum.gateway.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

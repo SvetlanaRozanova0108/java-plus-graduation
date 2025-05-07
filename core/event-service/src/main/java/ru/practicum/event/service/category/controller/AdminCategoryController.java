@@ -7,6 +7,9 @@ import ru.practicum.event.service.category.service.CategoryService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.interaction.api.dto.category.CategoryDto;
+import ru.practicum.interaction.api.dto.category.NewCategoryDto;
+import ru.practicum.interaction.api.exception.DuplicateException;
 
 @RestController
 @RequiredArgsConstructor

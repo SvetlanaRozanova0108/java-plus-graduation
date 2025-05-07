@@ -2,8 +2,9 @@ package ru.practicum.event.service.event.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Positive;
-import main.java.api.dto.event.*;
-import main.java.api.dto.request.ParticipationRequestDto;
+import ru.practicum.interaction.api.dto.event.*;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
+
 import java.util.List;
 
 public interface EventService {

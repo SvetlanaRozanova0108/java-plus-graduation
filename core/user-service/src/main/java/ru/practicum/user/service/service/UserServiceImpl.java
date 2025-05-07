@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import main.java.api.dto.user.NewUserRequest;
-import main.java.api.dto.user.UserDto;
-import main.java.api.dto.user.UserDtoForAdmin;
-import main.java.api.exception.DuplicateException;
-import main.java.api.exception.NotFoundException;
+import ru.practicum.interaction.api.dto.user.NewUserRequest;
+import ru.practicum.interaction.api.dto.user.UserDto;
+import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
+import ru.practicum.interaction.api.exception.DuplicateException;
+import ru.practicum.interaction.api.exception.NotFoundException;
 import ru.practicum.user.service.mapper.UserMapper;
 import ru.practicum.user.service.repository.UserRepository;
 

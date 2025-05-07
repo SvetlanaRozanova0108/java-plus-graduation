@@ -1,11 +1,11 @@
 package ru.practicum.event.service.compilation.mapper;
 
 import lombok.experimental.UtilityClass;
-import main.java.api.dto.compilation.CompilationDto;
-import main.java.api.dto.compilation.NewCompilationDto;
 import ru.practicum.event.service.compilation.model.Compilation;
 import ru.practicum.event.service.event.model.Event;
-import main.java.api.dto.event.EventShortDto;
+import ru.practicum.interaction.api.dto.compilation.NewCompilationDto;
+import ru.practicum.interaction.api.dto.compilation.CompilationDto;
+import ru.practicum.interaction.api.dto.event.EventShortDto;
 
 import java.util.HashSet;
 import java.util.List;

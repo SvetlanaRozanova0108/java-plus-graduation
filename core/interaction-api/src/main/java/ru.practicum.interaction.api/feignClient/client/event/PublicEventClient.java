@@ -3,17 +3,17 @@ import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import main.java.api.dto.event.EventFullDto;
-import main.java.api.dto.event.EventShortDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.enums.event.SortType;
+import ru.practicum.interaction.api.dto.event.EventFullDto;
+import ru.practicum.interaction.api.dto.event.EventShortDto;
+import ru.practicum.interaction.api.enums.event.SortType;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @FeignClient(name = "event-service", path = "/events")
 public interface PublicEventClient {

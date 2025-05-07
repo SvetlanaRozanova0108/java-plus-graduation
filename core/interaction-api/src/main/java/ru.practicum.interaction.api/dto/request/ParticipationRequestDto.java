@@ -1,13 +1,14 @@
-package ru.practicum.interaction.api.request;
-import main.java.api.enums.request.Status;
+package ru.practicum.interaction.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.*;
+import ru.practicum.interaction.api.enums.request.Status;
+
 import java.time.LocalDateTime;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @Getter
 @Builder

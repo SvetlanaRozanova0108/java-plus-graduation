@@ -1,11 +1,11 @@
 package ru.practicum.event.service.category.service;
 
 import lombok.RequiredArgsConstructor;
-import api.dto.category.CategoryDto;
-import main.java.api.dto.category.NewCategoryDto;
-import main.java.api.exception.ConflictDataException;
-import main.java.api.exception.DuplicateException;
-import main.java.api.exception.NotFoundException;
+import ru.practicum.interaction.api.dto.category.CategoryDto;
+import ru.practicum.interaction.api.dto.category.NewCategoryDto;
+import ru.practicum.interaction.api.exception.ConflictDataException;
+import ru.practicum.interaction.api.exception.DuplicateException;
+import ru.practicum.interaction.api.exception.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import ru.practicum.event.service.category.repository.CategoryRepository;
 import ru.practicum.event.service.event.repository.EventRepository;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor

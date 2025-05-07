@@ -3,8 +3,8 @@ import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.comment.CommentDto;
-import main.java.api.dto.comment.NewCommentDto;
+import ru.practicum.interaction.api.dto.comment.CommentDto;
+import ru.practicum.interaction.api.dto.comment.NewCommentDto;
 
 @FeignClient(name = "comment-service", path = "/users/{userId}/comments")
 public interface PrivateCommentClient {
@@ -12,7 +12,7 @@ public interface PrivateCommentClient {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     CommentDto createComment(@PathVariable Long userId, @RequestParam(defaultValue = "0") Long eventId,
-                                    @RequestBody NewCommentDto newCommentDto) throws FeignException;
+                             @RequestBody NewCommentDto newCommentDto) throws FeignException;
 
     @PatchMapping("/{commentId}")
     CommentDto updateComment(@PathVariable Long userId, @PathVariable Long commentId,

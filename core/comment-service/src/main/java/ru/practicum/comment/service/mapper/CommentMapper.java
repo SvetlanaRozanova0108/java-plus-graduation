@@ -1,9 +1,10 @@
 package ru.practicum.comment.service.mapper;
 
 import lombok.experimental.UtilityClass;
-import main.java.api.dto.comment.CommentDto;
-import main.java.api.dto.comment.NewCommentDto;
 import ru.practicum.comment.service.model.Comment;
+import ru.practicum.interaction.api.dto.comment.CommentDto;
+import ru.practicum.interaction.api.dto.comment.NewCommentDto;
+
 import java.time.LocalDateTime;
 
 @UtilityClass

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import main.java.api.dto.request.ParticipationRequestDto;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 

@@ -8,16 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.service.event.service.EventService;
-import main.java.api.dto.event.EventFullDto;
-import main.java.api.dto.event.EventPublicFilter;
-import main.java.api.dto.event.EventShortDto;
-import main.java.api.enums.event.SortType;
-import main.java.api.exception.InvalidDateTimeException;
+import ru.practicum.interaction.api.dto.event.EventFullDto;
+import ru.practicum.interaction.api.dto.event.EventPublicFilter;
+import ru.practicum.interaction.api.dto.event.EventShortDto;
+import ru.practicum.interaction.api.enums.event.SortType;
+import ru.practicum.interaction.api.exception.InvalidDateTimeException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @Slf4j
 @AllArgsConstructor

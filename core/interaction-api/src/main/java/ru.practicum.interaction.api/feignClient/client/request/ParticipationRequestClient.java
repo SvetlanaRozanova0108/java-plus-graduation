@@ -3,7 +3,7 @@ import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.request.ParticipationRequestDto;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 

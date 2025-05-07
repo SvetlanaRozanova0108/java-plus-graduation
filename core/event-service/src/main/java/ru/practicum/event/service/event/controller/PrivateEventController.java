@@ -3,11 +3,11 @@ package ru.practicum.event.service.event.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import main.java.api.dto.event.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.service.event.service.EventService;
-import main.java.api.dto.request.ParticipationRequestDto;
+import ru.practicum.interaction.api.dto.event.*;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 

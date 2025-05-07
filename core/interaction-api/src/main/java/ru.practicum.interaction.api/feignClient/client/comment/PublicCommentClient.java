@@ -2,8 +2,8 @@ package ru.practicum.interaction.api.feignClient.client.comment;
 import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import main.java.api.dto.comment.CommentDto;
-import main.java.api.enums.comment.SortType;
+import ru.practicum.interaction.api.dto.comment.CommentDto;
+import ru.practicum.interaction.api.enums.comment.SortType;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package ru.practicum.comment.service.service;
 
-import main.java.api.dto.comment.CommentDto;
-import main.java.api.dto.comment.NewCommentDto;
-import main.java.api.dto.user.UserDtoForAdmin;
-import main.java.api.enums.comment.SortType;
+import ru.practicum.interaction.api.dto.comment.CommentDto;
+import ru.practicum.interaction.api.dto.comment.NewCommentDto;
+import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
+import ru.practicum.interaction.api.enums.comment.SortType;
 
 import java.util.List;
 

@@ -2,6 +2,8 @@ package ru.practicum.event.service.category.mapper;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.event.service.category.model.Category;
+import ru.practicum.interaction.api.dto.category.CategoryDto;
+import ru.practicum.interaction.api.dto.category.NewCategoryDto;
 
 @UtilityClass
 public class CategoryMapper {

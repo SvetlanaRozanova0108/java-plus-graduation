@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-import static main.java.api.utils.date.DateTimeFormat.TIME_PATTERN;
+import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
