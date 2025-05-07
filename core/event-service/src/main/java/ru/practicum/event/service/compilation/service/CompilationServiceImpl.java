@@ -18,7 +18,6 @@ import ru.practicum.interaction.api.dto.event.EventShortDto;
 import ru.practicum.interaction.api.dto.stats.StatsDto;
 import ru.practicum.interaction.api.exception.NotFoundException;
 import ru.practicum.interaction.api.feignClient.client.stat.StatClient;
-import ru.practicum.interaction.api.feignClient.client.user.UserClient;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -34,7 +33,6 @@ public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
     private final StatClient statClient;
-    private final UserClient userClient;
 
     @Override
     @Transactional

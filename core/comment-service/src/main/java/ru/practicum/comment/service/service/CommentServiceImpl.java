@@ -18,9 +18,7 @@ import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
 import ru.practicum.interaction.api.enums.comment.SortType;
 import ru.practicum.interaction.api.exception.NotFoundException;
 import ru.practicum.interaction.api.exception.ValidationException;
-import ru.practicum.interaction.api.feignClient.client.comment.AdminCommentClient;
 import ru.practicum.interaction.api.feignClient.client.event.AdminEventClient;
-import ru.practicum.interaction.api.feignClient.client.event.PublicEventClient;
 import ru.practicum.interaction.api.feignClient.client.user.UserClient;
 import ru.practicum.interaction.api.enums.event.State;
 
@@ -36,9 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final UserClient userClient;
-    private final PublicEventClient publicEventClient;
     private final AdminEventClient adminEventClient;
-    private final AdminCommentClient commentClient;
     private final BanCommentRepository banCommentRepository;
 
     @Transactional

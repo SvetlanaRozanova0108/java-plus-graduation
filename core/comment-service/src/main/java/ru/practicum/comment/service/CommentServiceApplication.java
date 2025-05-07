@@ -3,9 +3,13 @@ package ru.practicum.comment.service;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import ru.practicum.interaction.api.feignClient.client.comment.AdminCommentClient;
+import ru.practicum.interaction.api.feignClient.client.event.AdminEventClient;
+import ru.practicum.interaction.api.feignClient.client.event.PublicEventClient;
+import ru.practicum.interaction.api.feignClient.client.user.UserClient;
 
 @SpringBootApplication
-@EnableFeignClients
+@EnableFeignClients(clients = {UserClient.class, AdminEventClient.class, })
 public class CommentServiceApplication {
 
     public static void main(String[] args) {

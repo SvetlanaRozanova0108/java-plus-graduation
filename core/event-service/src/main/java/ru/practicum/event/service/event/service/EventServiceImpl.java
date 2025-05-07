@@ -55,7 +55,6 @@ public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
-    private final ParticipationRequestClient requestClient;
     private final AdminParticipationRequestClient adminRequestClient;
     private final StatClient statClient;
     private final UserClient userClient;
