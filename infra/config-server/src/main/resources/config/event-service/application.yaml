@@ -19,3 +19,5 @@ spring:
     url: jdbc:postgresql://localhost:4432/event-db
     username: event
     password: event
+
+eventServiceName: event-service
