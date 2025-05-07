@@ -90,7 +90,7 @@ public class AdminEventController {
     }
 
     @PatchMapping("/request/{eventId}")
-    public void setConfirmedRequests(Long eventId, Integer count) {
+    public void setConfirmedRequests(@PathVariable("eventId") Long eventId, @RequestBody Integer count) {
         eventService.setConfirmedRequests(eventId, count);
     }
 }
