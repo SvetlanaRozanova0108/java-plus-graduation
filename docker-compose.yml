@@ -4,8 +4,6 @@ services:
     container_name: discovery-server
     ports:
       - "8761:8761"
-    networks:
-      - ewm-net
     healthcheck:
       test: "curl --fail --silent discovery-server:8761/actuator/health | grep UP || exit 1"
       timeout: 5s
@@ -18,8 +16,6 @@ services:
     depends_on:
       discovery-server:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
       - SERVER_PORT=9091
@@ -45,14 +41,12 @@ services:
         condition: service_healthy
       comment-service:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
 
   stats-server:
     build: stats/stats-server
-    container_name: ewm-stats-server
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
@@ -60,8 +54,6 @@ services:
         condition: service_healthy
       config-server:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-stats
 #      - SPRING_DATASOURCE_USERNAME=root
@@ -83,8 +75,6 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=root
       - POSTGRES_DB=ewm-stats
-    networks:
-      - ewm-net
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
@@ -135,8 +125,6 @@ services:
   user-db:
     image: postgres:16.1
     container_name: user-db
-    networks:
-      - ewm-net
     ports:
       - "5432:5432"
     environment:
@@ -152,8 +140,6 @@ services:
   event-db:
     image: postgres:16.1
     container_name: event-db
-    networks:
-      - ewm-net
     ports:
       - "4432:5432"
     environment:
@@ -169,8 +155,6 @@ services:
   request-db:
     image: postgres:16.1
     container_name: request-db
-    networks:
-      - ewm-net
     ports:
       - "3432:5432"
     environment:
@@ -186,8 +170,6 @@ services:
   comment-db:
     image: postgres:16.1
     container_name: comment-db
-    networks:
-      - ewm-net
     ports:
       - "2432:5432"
     environment:
@@ -212,8 +194,6 @@ services:
         condition: service_healthy
       config-server:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
       - SERVER_PORT=8081
@@ -237,8 +217,6 @@ services:
         condition: service_healthy
       stats-db:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
       - SERVER_PORT=8082
@@ -260,8 +238,6 @@ services:
         condition: service_healthy
       config-server:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
       - SERVER_PORT=8083
@@ -283,8 +259,6 @@ services:
         condition: service_healthy
       config-server:
         condition: service_healthy
-    networks:
-      - ewm-net
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
       - SERVER_PORT=8084
@@ -293,8 +267,3 @@ services:
       timeout: 5s
       interval: 25s
       retries: 10
-
-networks:
-  ewm-net:
-    driver: bridge
-

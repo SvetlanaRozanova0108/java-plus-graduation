@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS events(
     published_on timestamp,
     description varchar(7000),
     event_date timestamp NOT NULL,
-    initiator_id BIGINT NOT NULL references users(user_id),
+    initiator_id BIGINT NOT NULL,
     paid BOOLEAN,
     participant_limit int,
     state varchar(50) NOT NULL,
