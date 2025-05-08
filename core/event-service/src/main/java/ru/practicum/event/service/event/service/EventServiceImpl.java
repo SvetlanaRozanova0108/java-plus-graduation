@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.event.service.category.model.Category;
@@ -14,17 +16,10 @@ import ru.practicum.event.service.event.mapper.EventMapper;
 import ru.practicum.event.service.event.model.Event;
 import ru.practicum.event.service.event.model.QEvent;
 import ru.practicum.event.service.event.repository.EventRepository;
+import ru.practicum.interaction.api.dto.event.*;
+import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 import ru.practicum.interaction.api.dto.stats.EndpointHitDto;
 import ru.practicum.interaction.api.dto.stats.StatsDto;
-import ru.practicum.interaction.api.dto.event.EventFullDto;
-import ru.practicum.interaction.api.dto.event.NewEventDto;
-import ru.practicum.interaction.api.dto.event.EventShortDto;
-import ru.practicum.interaction.api.dto.event.UpdateEventUserRequest;
-import ru.practicum.interaction.api.dto.event.EventPublicFilter;
-import ru.practicum.interaction.api.dto.event.EventAdminFilter;
-import ru.practicum.interaction.api.dto.event.UpdateEventAdminRequest;
-import ru.practicum.interaction.api.dto.event.EventRequestStatusUpdateResult;
-import ru.practicum.interaction.api.dto.event.EventRequestStatusUpdateRequest;
 import ru.practicum.interaction.api.dto.user.UserDto;
 import ru.practicum.interaction.api.enums.event.State;
 import ru.practicum.interaction.api.enums.event.StateAction;
@@ -33,7 +28,6 @@ import ru.practicum.interaction.api.exception.*;
 import ru.practicum.interaction.api.feignClient.client.request.AdminParticipationRequestClient;
 import ru.practicum.interaction.api.feignClient.client.stat.StatClient;
 import ru.practicum.interaction.api.feignClient.client.user.UserClient;
-import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -316,7 +310,9 @@ public class EventServiceImpl implements EventService {
             conditions = conditions.and(QEvent.event.category.id.in(input.getCategories()));
         }
         List<Event> events = eventRepository.findAll(conditions, pageable).getContent();
-
+        if (events.isEmpty()) {
+            return List.of();
+        }
         List<String> urisList = events
                 .stream()
                 .map(event -> "/events/" + event.getId())
@@ -455,14 +451,11 @@ public class EventServiceImpl implements EventService {
                     }
                     if (Objects.equals(event.getConfirmedRequests(), event.getParticipantLimit())) {
                         request = adminRequestClient.setStatusRequest(request.getId(), Status.REJECTED);
-
-//                        request.setStatus(Status.REJECTED);
                         rejectedRequests.add(request);
                     } else {
                         request = adminRequestClient.setStatusRequest(request.getId(), Status.CONFIRMED);
                         Integer confirmedRequests = event.getConfirmedRequests();
                         event.setConfirmedRequests(++confirmedRequests);
-//                        request.setStatus(Status.CONFIRMED);
                         confirmedRequestsList.add(request);
                     }
                 });
@@ -505,6 +498,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", eventId)));
         event.setConfirmedRequests(count);
+        eventRepository.save(event);
     }
 
     @Override

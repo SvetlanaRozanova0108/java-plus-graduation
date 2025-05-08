@@ -142,6 +142,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         return result;
     }
 
+    @Transactional
     @Override
     public ParticipationRequestDto setStatusRequest(Long id, Status status) {
         var result = requestRepository.findById(id)
