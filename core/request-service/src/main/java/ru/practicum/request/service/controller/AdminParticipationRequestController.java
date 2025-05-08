@@ -37,7 +37,7 @@ public class AdminParticipationRequestController {
     }
 
     @PutMapping("/status/{id}/{status}")
-    public void setStatusRequest(@PathVariable Long id, @PathVariable Status status) {
-        requestService.setStatusRequest(id, status);
+    public ParticipationRequestDto setStatusRequest(@PathVariable Long id, @PathVariable Status status) {
+        return requestService.setStatusRequest(id, status);
     }
 }

@@ -23,5 +23,5 @@ public interface ParticipationRequestService {
 
     Map<Long, List<ParticipationRequestDto>> findAllConfirmedByEventId(List<Long> eventId);
 
-    void setStatusRequest(Long id, Status status);
+    ParticipationRequestDto setStatusRequest(Long id, Status status);
 }

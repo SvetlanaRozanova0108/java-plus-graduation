@@ -1,6 +1,5 @@
 package ru.practicum.interaction.api.feignClient.client.request;
 import feign.FeignException;
-import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.interaction.api.enums.request.Status;
@@ -22,5 +21,5 @@ public interface AdminParticipationRequestClient {
     Map<Long, List<ParticipationRequestDto>> findAllConfirmedByEventId(@PathVariable List<Long> eventId) throws FeignException;
 
     @PutMapping("/status/{id}/{status}")
-    void setStatusRequest(@PathVariable Long id, @PathVariable Status status)  throws FeignException;
+    ParticipationRequestDto setStatusRequest(@PathVariable Long id, @PathVariable Status status)  throws FeignException;
 }

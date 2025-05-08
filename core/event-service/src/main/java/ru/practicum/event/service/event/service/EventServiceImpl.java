@@ -454,12 +454,15 @@ public class EventServiceImpl implements EventService {
                         throw new ConflictDataException("Можно изменить только статус PENDING");
                     }
                     if (Objects.equals(event.getConfirmedRequests(), event.getParticipantLimit())) {
-                        adminRequestClient.setStatusRequest(request.getId(), Status.REJECTED);
+                        request = adminRequestClient.setStatusRequest(request.getId(), Status.REJECTED);
+
+//                        request.setStatus(Status.REJECTED);
                         rejectedRequests.add(request);
                     } else {
-                        adminRequestClient.setStatusRequest(request.getId(), Status.CONFIRMED);
+                        request = adminRequestClient.setStatusRequest(request.getId(), Status.CONFIRMED);
                         Integer confirmedRequests = event.getConfirmedRequests();
                         event.setConfirmedRequests(++confirmedRequests);
+//                        request.setStatus(Status.CONFIRMED);
                         confirmedRequestsList.add(request);
                     }
                 });

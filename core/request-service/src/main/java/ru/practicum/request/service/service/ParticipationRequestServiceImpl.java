@@ -143,10 +143,11 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public void setStatusRequest(Long id, Status status) {
+    public ParticipationRequestDto setStatusRequest(Long id, Status status) {
         var result = requestRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(" не найдено запроса с id: " + id));
         result.setStatus(status);
+        return ParticipationRequestMapper.toParticipationRequestDto(result);
     }
 
     private void checkExistsUserById(Long userId) {

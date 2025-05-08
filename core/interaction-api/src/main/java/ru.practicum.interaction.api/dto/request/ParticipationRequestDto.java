@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTERN;
 
 @Getter
+@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
