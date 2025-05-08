@@ -27,7 +27,7 @@ public class EventFullDto {
     String description;
     @JsonFormat(pattern = TIME_PATTERN)
     LocalDateTime eventDate;
-    Long initiatorId;
+    Long initiator;
     Location location;
     Boolean paid;
     Integer participantLimit;

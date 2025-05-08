@@ -26,7 +26,7 @@ public interface PrivateEventClient {
 
     @PatchMapping("/{eventId}")
     EventFullDto updateEventOfUser(@Valid @RequestBody UpdateEventUserRequest updateRequest,
-                                          @PathVariable Long userId,
+                                          @PathVariable("userId") Long userId,
                                           @PathVariable Long eventId) throws FeignException;
 
     @GetMapping("/{eventId}/requests")

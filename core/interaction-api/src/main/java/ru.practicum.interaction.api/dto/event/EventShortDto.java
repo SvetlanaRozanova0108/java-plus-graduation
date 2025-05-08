@@ -23,7 +23,7 @@ public class EventShortDto {
     @JsonFormat(pattern = TIME_PATTERN)
     LocalDateTime eventDate;
     LocalDateTime publishedOn;
-    Long initiatorId;
+    Long initiator;
     Boolean paid;
     String title;
     Long views;

@@ -35,7 +35,7 @@ spring:
             - Path=/comments/**
 
         - id: admin_compilation
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/admin/compilations/**
 

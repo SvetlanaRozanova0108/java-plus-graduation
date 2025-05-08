@@ -35,6 +35,6 @@ public interface AdminEventClient {
     @GetMapping("/{id}")
     EventFullDto findById(@PathVariable("id") @Positive Long id) throws FeignException;
 
-    @PatchMapping("/request/{eventId}")
+    @PutMapping("/request/{eventId}")
     EventFullDto setConfirmedRequests(@PathVariable("eventId") Long eventId, @RequestBody Integer count) throws FeignException;
 }

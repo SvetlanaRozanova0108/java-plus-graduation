@@ -82,14 +82,14 @@ public class AdminEventController {
         log.info("Получение подробной информации об опубликованном событии по его идентификатору.");
 
         try {
-            return eventService.getEventById(id);
+            return eventService.getAdminEventById(id);
         } catch (Exception e) {
             log.error("При запуске с параметрами id " + id, e);
             throw e;
         }
     }
 
-    @PatchMapping("/request/{eventId}")
+    @PutMapping("/request/{eventId}")
     public void setConfirmedRequests(@PathVariable("eventId") Long eventId, @RequestBody Integer count) {
         eventService.setConfirmedRequests(eventId, count);
     }

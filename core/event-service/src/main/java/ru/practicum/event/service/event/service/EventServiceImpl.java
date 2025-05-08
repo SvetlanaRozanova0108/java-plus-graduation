@@ -2,7 +2,6 @@ package ru.practicum.event.service.event.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,14 +29,8 @@ import ru.practicum.interaction.api.dto.user.UserDto;
 import ru.practicum.interaction.api.enums.event.State;
 import ru.practicum.interaction.api.enums.event.StateAction;
 import ru.practicum.interaction.api.enums.request.Status;
-import ru.practicum.interaction.api.exception.ValidationException;
-import ru.practicum.interaction.api.exception.ConflictDataException;
-import ru.practicum.interaction.api.exception.SaveStatsException;
-import ru.practicum.interaction.api.exception.NotFoundRecordInBDException;
-import ru.practicum.interaction.api.exception.OperationFailedException;
-import ru.practicum.interaction.api.exception.InvalidDateTimeException;
+import ru.practicum.interaction.api.exception.*;
 import ru.practicum.interaction.api.feignClient.client.request.AdminParticipationRequestClient;
-import ru.practicum.interaction.api.feignClient.client.request.ParticipationRequestClient;
 import ru.practicum.interaction.api.feignClient.client.stat.StatClient;
 import ru.practicum.interaction.api.feignClient.client.user.UserClient;
 import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
@@ -449,7 +442,7 @@ public class EventServiceImpl implements EventService {
         List<Long> requestIds = updateRequest.getRequestIds();
         log.info("Получили список id запросов на участие: {}", requestIds);
         List<ParticipationRequestDto> requestList = adminRequestClient.findAllByIds(requestIds);
-        if (requestList.stream().anyMatch(request -> !Objects.equals(request.getEventId(), eventId))) {
+        if (requestList.stream().anyMatch(request -> !Objects.equals(request.getEvent(), eventId))) {
             throw new ValidationException("Все запросы должны принадлежать одному событию");
         }
         List<ParticipationRequestDto> confirmedRequestsList = new ArrayList<>();
@@ -509,6 +502,23 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", eventId)));
         event.setConfirmedRequests(count);
+    }
+
+    @Override
+    public EventFullDto getAdminEventById(Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(
+                () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", id)));
+
+        Optional<StatsDto> stat = statClient.getStats(event.getCreatedOn().minusSeconds(1),
+                LocalDateTime.now(), List.of("/events/" + event.getId()), true).stream().findFirst();
+
+        EventFullDto result = EventMapper.mapToFullDto(event, stat.isPresent() ? stat.get().getHits() : 0L);
+
+        List<ParticipationRequestDto> confirmedRequests = adminRequestClient
+                .findAllConfirmedByEventId(List.of(event.getId()))  .get(event.getId());
+        result.setConfirmedRequests(confirmedRequests != null ? confirmedRequests.size() : 0);
+
+        return result;
     }
 
     private void checkFields(NewEventDto dto) {

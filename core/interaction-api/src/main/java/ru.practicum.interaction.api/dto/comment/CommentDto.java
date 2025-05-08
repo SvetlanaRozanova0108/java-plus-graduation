@@ -17,7 +17,7 @@ import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTER
 public class CommentDto {
     Long id;
     String text;
-    Long eventId;
+    Long event;
     String eventName;
     String authorName;
     Integer likes;

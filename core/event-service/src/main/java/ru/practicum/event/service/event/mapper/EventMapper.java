@@ -12,8 +12,6 @@ import ru.practicum.interaction.api.dto.event.NewEventDto;
 
 import java.time.LocalDateTime;
 
-import static org.apache.sshd.common.util.closeable.AbstractCloseable.*;
-
 @UtilityClass
 public class EventMapper {
 
@@ -47,7 +45,7 @@ public class EventMapper {
                 .publishedOn(event.getPublishedOn())
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
-                .initiatorId(event.getInitiatorId())
+                .initiator(event.getInitiatorId())
                 .location(Location.builder().lat(event.getLat()).lon(event.getLon()).build())
                 .paid(event.getPaid())
                 .views(views)
@@ -67,7 +65,7 @@ public class EventMapper {
                 .eventDate(event.getEventDate())
                 .publishedOn(event.getPublishedOn())
                 .id(event.getId())
-                .initiatorId(event.getInitiatorId())
+                .initiator(event.getInitiatorId())
                 .paid(event.getPaid())
                 .title(event.getTitle())
                 .views(views)

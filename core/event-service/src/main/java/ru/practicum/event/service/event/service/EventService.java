@@ -33,4 +33,5 @@ public interface EventService {
 
     void setConfirmedRequests(Long eventId, Integer count);
 
+    EventFullDto getAdminEventById(@Positive Long id);
 }
