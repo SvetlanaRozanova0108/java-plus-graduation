@@ -470,7 +470,7 @@ public class EventServiceImpl implements EventService {
                     if (request.getStatus() != Status.PENDING) {
                         throw new ConflictDataException("Можно изменить только статус PENDING");
                     }
-                    adminRequestClient.setStatusRequest(request.getId(), Status.REJECTED);
+                    request = adminRequestClient.setStatusRequest(request.getId(), Status.REJECTED);
                     rejectedRequests.add(request);
                 });
             }
