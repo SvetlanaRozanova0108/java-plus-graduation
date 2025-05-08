@@ -33,6 +33,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Transactional
     @Override
     public ParticipationRequestDto addRequest(Long userId, Long eventId) {
+
         if (eventId == 0) {
             throw new ValidationException("Не задано id события");
         }

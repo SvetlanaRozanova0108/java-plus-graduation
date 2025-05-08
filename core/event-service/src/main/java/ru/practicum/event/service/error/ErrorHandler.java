@@ -1,4 +1,4 @@
-package ru.practicum.interaction.api.error;
+package ru.practicum.event.service.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.practicum.interaction.api.exception.ConflictDataException;
-import ru.practicum.interaction.api.exception.DuplicateException;
 import ru.practicum.interaction.api.exception.InvalidDateTimeException;
 import ru.practicum.interaction.api.exception.InvalidSortException;
-import ru.practicum.interaction.api.exception.NotFoundException;
 import ru.practicum.interaction.api.exception.NotFoundRecordInBDException;
-import ru.practicum.interaction.api.exception.OperationFailedException;
-import ru.practicum.interaction.api.exception.ServerErrorException;
 import ru.practicum.interaction.api.exception.ValidationException;
+import ru.practicum.interaction.api.exception.ServerErrorException;
+import ru.practicum.interaction.api.exception.OperationFailedException;
+import ru.practicum.interaction.api.exception.ConflictDataException;
+import ru.practicum.interaction.api.exception.DuplicateException;
+import ru.practicum.interaction.api.exception.NotFoundException;
 
 @RestControllerAdvice
 @ControllerAdvice
