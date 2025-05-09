@@ -1,5 +1,6 @@
 package ru.practicum.interaction.api.feignClient.client.event;
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,6 +11,7 @@ import ru.practicum.interaction.api.UpdateObject;
 import ru.practicum.interaction.api.dto.event.EventFullDto;
 import ru.practicum.interaction.api.dto.event.UpdateEventAdminRequest;
 import ru.practicum.interaction.api.enums.event.State;
+import ru.practicum.interaction.api.exception.ServerErrorException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,8 +34,14 @@ public interface AdminEventClient {
     EventFullDto updateEvent(@PositiveOrZero @PathVariable Long eventId,
                              @Validated(UpdateObject.class) @RequestBody UpdateEventAdminRequest updateEventAdminRequest) throws FeignException;
 
+    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "findByIdFallback")
     @GetMapping("/{id}")
     EventFullDto findById(@PathVariable("id") @Positive Long id) throws FeignException;
+
+    @GetMapping("/{id}")
+    default EventFullDto findByIdFallback(Long id, Throwable throwable) {
+        throw new ServerErrorException("Server Error Exception.");
+    }
 
     @PutMapping("/request/{eventId}")
     EventFullDto setConfirmedRequests(@PathVariable("eventId") Long eventId, @RequestBody Integer count) throws FeignException;

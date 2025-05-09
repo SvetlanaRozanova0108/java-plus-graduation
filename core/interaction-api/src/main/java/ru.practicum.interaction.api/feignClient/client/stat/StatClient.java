@@ -1,6 +1,7 @@
 package ru.practicum.interaction.api.feignClient.client.stat;
 
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ public interface StatClient {
     @PostMapping("/hit")
     String saveHit(@RequestBody EndpointHitDto endpointHitDto) throws FeignException;
 
+    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "getStatsFallback")
     @GetMapping("/stats")
     List<StatsDto> getStats(@RequestParam @DateTimeFormat(pattern = TIME_PATTERN) LocalDateTime start,
                             @RequestParam @DateTimeFormat(pattern = TIME_PATTERN) LocalDateTime end,

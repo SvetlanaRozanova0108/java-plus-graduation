@@ -1,5 +1,6 @@
 package ru.practicum.interaction.api.feignClient.client.user;
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -9,12 +10,14 @@ import ru.practicum.interaction.api.dto.user.NewUserRequest;
 import ru.practicum.interaction.api.dto.user.UserDto;
 import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @FeignClient(name = "user-service", path = "/admin/users")
 public interface UserClient {
 
+    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "getAllUsersFallback")
     @GetMapping
     List<UserDto> getAllUsers(@RequestParam(defaultValue = "") List<Long> ids,
                               @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
@@ -31,4 +34,9 @@ public interface UserClient {
 
     @GetMapping("/admin/{userId}")
     UserDtoForAdmin adminFindById(@PathVariable Long userId) throws FeignException;
+
+    @GetMapping
+    default List<UserDto> getAllUsersFallback(List<Long> ids, Integer from, Integer size, Throwable throwable) {
+        return new ArrayList<>();
+    }
 }
