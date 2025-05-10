@@ -46,6 +46,11 @@ public class EventServiceImpl implements EventService {
     private final StatClient statClient;
     private final UserClient userClient;
 
+    private final String USER_NOT_FOUND = "Пользователь не найден.";
+    private final String EVENT_NOT_FOUND = "Событие не найдено.";
+    private final String CATEGORY_NOT_FOUND = "Категория не найдена.";
+    private final String EVENT_NOT_FOUND_IN_DATABASE = "Не найдено событие в БД с ID = ";
+
     @Value("${eventServiceName}")
     private String serviceName;
 
@@ -55,7 +60,7 @@ public class EventServiceImpl implements EventService {
 
         checkFields(eventDto);
         Category category = categoryRepository.findById(eventDto.getCategory())
-                .orElseThrow(() -> new NotFoundException("Категория не найдена"));
+                .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND));
         if (eventDto.getCommenting() == null) {
             eventDto.setCommenting(true);
         }
@@ -95,7 +100,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventOfUser(Long userId, Long eventId) {
         UserDto userDto = userClient.findById(userId);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND));
         if (!Objects.equals(event.getInitiatorId(), userId)) {
             throw new ValidationException("Можно просмотреть только своё событие");
         }
@@ -114,7 +119,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventFullDto updateEventOfUser(UpdateEventUserRequest updateRequest, Long userId, Long eventId) {
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND));
         if (!Objects.equals(event.getInitiatorId(), userId)) {
             throw new ValidationException("Можно просмотреть только своё событие");
         }
@@ -126,7 +131,7 @@ public class EventServiceImpl implements EventService {
         }
         if (updateRequest.getCategory() != null) {
             Category category = categoryRepository.findById(updateRequest.getCategory())
-                    .orElseThrow(() -> new NotFoundException("Категория не найдена"));
+                    .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND));
             event.setCategory(category);
         }
         if (updateRequest.getDescription() != null && !updateRequest.getDescription().isBlank()) {
@@ -257,7 +262,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getPublicEventById(HttpServletRequest httpServletRequest, Long id) {
 
         Event event = eventRepository.findById(id).orElseThrow(
-                () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", id)));
+                () -> new NotFoundRecordInBDException(String.format(EVENT_NOT_FOUND_IN_DATABASE)+ id));
 
         if (event.getState() != State.PUBLISHED)
             throw new NotFoundException("Посмотреть можно только опубликованное событие.");
@@ -345,7 +350,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto updateEventAdmin(Long eventId, UpdateEventAdminRequest updateEventAdminRequest) {
 
         Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", eventId)));
+                () -> new NotFoundRecordInBDException(String.format(EVENT_NOT_FOUND_IN_DATABASE)+ eventId));
 
         checkStateAction(event, updateEventAdminRequest);
 
@@ -410,9 +415,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<ParticipationRequestDto> getRequestsOfUserEvent(Long userId, Long eventId) {
         if (userClient.findById(userId) == null) {
-            throw new NotFoundException("Пользователь не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND));
 
         if (!Objects.equals(event.getInitiatorId(), userId)) {
             log.error("userId отличается от id создателя события");
@@ -426,9 +431,9 @@ public class EventServiceImpl implements EventService {
     public EventRequestStatusUpdateResult updateRequestsStatus(EventRequestStatusUpdateRequest updateRequest,
                                                                Long userId, Long eventId) {
         if (userClient.findById(userId) == null) {
-            throw new NotFoundException("Пользователь не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND));
         if (!Objects.equals(event.getInitiatorId(), userId)) {
             throw new ValidationException("Событие должно быть создано текущим пользователем");
         }
@@ -475,7 +480,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventById(Long id) {
 
         Event event = eventRepository.findById(id).orElseThrow(
-                () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", id)));
+                () -> new NotFoundRecordInBDException(String.format(EVENT_NOT_FOUND_IN_DATABASE)+ id));
 
         if (event.getState() != State.PUBLISHED)
             throw new NotFoundException("Посмотреть можно только опубликованное событие.");
@@ -496,7 +501,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void setConfirmedRequests(Long eventId, Integer count) {
         Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", eventId)));
+                () -> new NotFoundRecordInBDException(String.format(EVENT_NOT_FOUND_IN_DATABASE)+ eventId));
         event.setConfirmedRequests(count);
         eventRepository.save(event);
     }
@@ -504,7 +509,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getAdminEventById(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(
-                () -> new NotFoundRecordInBDException(String.format("Не найдено событие в БД с ID = %d.", id)));
+                () -> new NotFoundRecordInBDException(String.format(EVENT_NOT_FOUND_IN_DATABASE)+ id));
 
         Optional<StatsDto> stat = statClient.getStats(event.getCreatedOn().minusSeconds(1),
                 LocalDateTime.now(), List.of("/events/" + event.getId()), true).stream().findFirst();

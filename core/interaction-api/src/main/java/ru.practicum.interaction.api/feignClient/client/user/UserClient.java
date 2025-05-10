@@ -10,7 +10,7 @@ import ru.practicum.interaction.api.dto.user.NewUserRequest;
 import ru.practicum.interaction.api.dto.user.UserDto;
 import ru.practicum.interaction.api.dto.user.UserDtoForAdmin;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -37,6 +37,6 @@ public interface UserClient {
 
     @GetMapping
     default List<UserDto> getAllUsersFallback(List<Long> ids, Integer from, Integer size, Throwable throwable) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }

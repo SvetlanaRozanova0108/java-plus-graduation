@@ -37,6 +37,11 @@ public class CommentServiceImpl implements CommentService {
     private final AdminEventClient adminEventClient;
     private final BanCommentRepository banCommentRepository;
 
+    private final String USER_NOT_FOUND = "Пользователь не найден.";
+    private final String INCORRECTLY_EVENT_ID = "Некорректно указан eventId.";
+    private final String EVENT_NOT_FOUND = "Событие не найдено.";
+    private final String USER_NOT_COMMENT = "Пользователь не оставлял комментарий.";
+
     @Transactional
     @Override
     public CommentDto createComment(Long eventId, Long userId, NewCommentDto newCommentDto) {
@@ -63,19 +68,19 @@ public class CommentServiceImpl implements CommentService {
         UserDto user = getUser(userId);
         EventFullDto event = getEvent(eventId);
         if (userClient.findById(userId)==null) {
-            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
         if (adminEventClient.findById(eventId)==null) {
-            throw new NotFoundException("Событие не найдено");
+            throw new NotFoundException(EVENT_NOT_FOUND);
         }
         Comment comment = checkComment(commentId);
         if (!Objects.equals(comment.getEventId(), eventId)) {
-            throw new ValidationException("Некорректно указан eventId");
+            throw new ValidationException(INCORRECTLY_EVENT_ID);
         }
         if (comment.getAuthorId().equals(userId)) {
             comment.setText(newCommentDto.getText());
         } else {
-            throw new ValidationException("Пользователь не оставлял комментарий с указанным Id " + commentId);
+            throw new ValidationException(USER_NOT_COMMENT);
         }
         return CommentMapper.toCommentDto(comment,event.getAnnotation(), user.getName());
     }
@@ -85,19 +90,19 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(Long userId, Long eventId, Long commentId) {
         checkEventId(eventId);
         if (userClient.findById(userId)== null) {
-            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
         if (adminEventClient.findById(eventId)==null) {
-            throw new NotFoundException("Событие не найдено");
+            throw new NotFoundException(EVENT_NOT_FOUND);
         }
         Comment comment = checkComment(commentId);
         if (!Objects.equals(comment.getEventId(), eventId)) {
-            throw new ValidationException("Некорректно указан eventId");
+            throw new ValidationException(INCORRECTLY_EVENT_ID);
         }
         if (comment.getAuthorId().equals(userId)) {
             commentRepository.deleteById(commentId);
         } else {
-            throw new ValidationException("Пользователь не оставлял комментарий с указанным Id " + commentId);
+            throw new ValidationException(USER_NOT_COMMENT);
         }
     }
 
@@ -107,7 +112,7 @@ public class CommentServiceImpl implements CommentService {
         checkEventId(eventId);
         Comment comment = checkComment(commentId);
         if (!Objects.equals(comment.getEventId(), eventId)) {
-            throw new ValidationException("Некорректно указан eventId");
+            throw new ValidationException(INCORRECTLY_EVENT_ID);
         }
         commentRepository.deleteById(commentId);
     }
@@ -132,7 +137,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto addLike(Long userId, Long commentId) {
         if (userClient.findById(userId)== null) {
-            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
         Comment comment = checkComment(commentId);
         if (comment.getAuthorId().equals(userId)) {
@@ -150,7 +155,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteLike(Long userId, Long commentId) {
         if (userClient.findById(userId)== null) {
-            throw new NotFoundException("Пользователь c id: " + userId + " не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
         Comment comment = checkComment(commentId);
         if (!comment.getLikes().remove(userId)) {
@@ -173,7 +178,6 @@ public class CommentServiceImpl implements CommentService {
         if (checkExistForbiddenCommentEvents(userId, eventId)) {
             throw new ValidationException("Уже добавлен такой запрет на комментирование");
         }
-        addForbiddenCommentEvents(userId, eventId);
         return userClient.adminFindById(userId);
     }
 
@@ -185,9 +189,6 @@ public class CommentServiceImpl implements CommentService {
             throw new NotFoundException("Такого запрета на комментирование не найдено");
         }
    }
-
-    private void addForbiddenCommentEvents(Long userId, Long eventId) {
-    }
 
     private boolean removeForbiddenCommentEvents(Long userId, Long eventId) {
         var comment = banCommentRepository.findByUserIdAndEventId(userId, eventId);

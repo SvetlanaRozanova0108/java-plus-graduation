@@ -11,14 +11,19 @@ import ru.practicum.interaction.api.exception.ServerErrorException;
 public class CustomErrorDecoder implements ErrorDecoder {
     private final ErrorDecoder errorDecoder = new Default();
 
+    final int BAD_REQUEST = 400;
+    final int NOT_FOUND = 404;
+    final int SERVER_ERROR = 500;
+
     @Override
     public Exception decode(String s, Response response) {
-        if (response.status() == 400) {
-            throw new BadRequestException("Bad request".formatted(s));
-        } else if (response.status() == 404) {
-            throw new NotFoundException("Not Found".formatted(s));
-        } else if (response.status() == 500) {
-            throw new ServerErrorException("Internal server error".formatted(s));
+
+        if (response.status() == BAD_REQUEST) {
+            throw new BadRequestException("Bad request");
+        } else if (response.status() == NOT_FOUND) {
+            throw new NotFoundException("Not Found");
+        } else if (response.status() == SERVER_ERROR) {
+            throw new ServerErrorException("Internal server error");
         } else {
             return errorDecoder.decode(s, response);
         }

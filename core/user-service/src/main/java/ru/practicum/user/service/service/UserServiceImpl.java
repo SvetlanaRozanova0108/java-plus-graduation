@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final String USER_NOT_FOUND = "Пользователь не найден.";
+
     @Override
     public List<UserDto> getAllUsers(List<Long> ids, Integer from, Integer size) {
         PageRequest pageRequest = PageRequest.of(from / size, size);
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new NotFoundException("Пользователь не найден");
+            throw new NotFoundException(USER_NOT_FOUND);
         }
         userRepository.deleteById(id);
     }
@@ -59,12 +61,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findById(Long userId) {
         return UserMapper.toUserDto(userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден")));
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND)));
     }
 
     @Override
     public UserDtoForAdmin adminFindById(Long userId) {
         return UserMapper.toUserDtoForAdmin(userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден")));
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND)));
     }
 }

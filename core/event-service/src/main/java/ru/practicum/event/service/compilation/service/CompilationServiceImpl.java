@@ -34,6 +34,8 @@ public class CompilationServiceImpl implements CompilationService {
     private final EventRepository eventRepository;
     private final StatClient statClient;
 
+    private final String COMPILATION_NOT_FOUND = "Подборка не найдена.";
+
     @Override
     @Transactional
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
@@ -56,7 +58,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     public CompilationDto updateCompilation(Long compId, UpdateCompilationRequest updateCompilationRequest) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Подборка с id: " + compId + " не найдена"));
+                .orElseThrow(() -> new NotFoundException(COMPILATION_NOT_FOUND));
         Set<Long> eventIds = updateCompilationRequest.getEvents();
         if (eventIds != null && !eventIds.isEmpty()) {
             compilation.setEvents(new HashSet<>(getSeveralEvents(eventIds.stream().toList())));
@@ -76,7 +78,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     public void deleteCompilation(Long compId) {
         if (!compilationRepository.existsById(compId)) {
-            throw new NotFoundException("Подборка с id: " + compId + " не найдена");
+            throw new NotFoundException(COMPILATION_NOT_FOUND);
         }
         compilationRepository.deleteById(compId);
     }
@@ -110,7 +112,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto getCompilationById(Long compId) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Подборка событий с id: " + compId + " не найдена"));
+                .orElseThrow(() -> new NotFoundException(COMPILATION_NOT_FOUND));
         return CompilationMapper.toCompilationDto(compilation, mapToEventShort(new ArrayList<>(compilation.getEvents())));
     }
 
