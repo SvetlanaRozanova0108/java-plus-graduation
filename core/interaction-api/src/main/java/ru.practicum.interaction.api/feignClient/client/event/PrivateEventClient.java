@@ -32,8 +32,8 @@ public interface PrivateEventClient {
     @GetMapping("/{eventId}/requests")
     List<ParticipationRequestDto> getRequestsOfUserEvent(@PathVariable Long userId, @PathVariable Long eventId) throws FeignException;
 
-    @PatchMapping("/{eventId}/requests")
-    EventRequestStatusUpdateResult updateRequestsStatus(@PathVariable Long userId, @PathVariable Long eventId,
-                                                        @Valid @RequestBody
-                                                        EventRequestStatusUpdateRequest updateRequest) throws FeignException;
+//    @PatchMapping("/{eventId}/requests")
+//    EventRequestStatusUpdateResult updateRequestsStatus(@PathVariable Long userId, @PathVariable Long eventId,
+//                                                        @Valid @RequestBody
+//                                                        EventRequestStatusUpdateRequest updateRequest) throws FeignException;
 }
