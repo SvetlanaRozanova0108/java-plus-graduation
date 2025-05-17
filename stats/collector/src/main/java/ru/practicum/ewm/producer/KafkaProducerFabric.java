@@ -1,4 +1,4 @@
-package ru.practicum.ewm.gRPC.producer;
+package ru.practicum.ewm.producer;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -15,15 +15,13 @@ public class KafkaProducerFabric {
 
     @Value("${spring.kafka.producer.properties.bootstrap-servers}")
     private String bootstrapServers;
-
     @Value("${spring.kafka.producer.properties.key-serializer}")
     private String keySerializer;
-
     @Value("${spring.kafka.producer.properties.value-serializer}")
     private String valueSerializer;
 
     @Bean
-    public Producer<String, SpecificRecordBase> getProducer() {
+    public Producer<Long, SpecificRecordBase> getProducer() {
         Properties config = new Properties();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);

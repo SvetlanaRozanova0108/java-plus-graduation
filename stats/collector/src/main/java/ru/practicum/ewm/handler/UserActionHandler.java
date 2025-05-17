@@ -1,4 +1,4 @@
-package ru.practicum.ewm.gRPC.handler;
+package ru.practicum.ewm.handler;
 import ru.practicum.ewm.grpc.stats.UserActionProto;
 
 public interface UserActionHandler {

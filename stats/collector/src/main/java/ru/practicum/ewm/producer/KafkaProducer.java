@@ -1,4 +1,4 @@
-package ru.practicum.ewm.gRPC.producer;
+package ru.practicum.ewm.producer;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.specific.SpecificRecordBase;
