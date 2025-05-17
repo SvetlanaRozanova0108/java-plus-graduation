@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package stats.services;
+package stats.service.dashboard;
 
 import "messages/events_requests.proto";
 import "google/protobuf/empty.proto";
@@ -8,12 +8,12 @@ import "google/protobuf/empty.proto";
 option java_package = "ru.practicum.ewm.grpc.stats.controller";
 
 service RecommendationsController {
-    rpc GetRecommendationsForUser(stats.messages.UserPredictionsRequestProto)
-     returns (stream stats.messages.RecommendedEventProto);
+    rpc GetRecommendationsForUser(stats.message.request.UserPredictionsRequestProto)
+     returns (stream stats.message.request.RecommendedEventProto);
 
-    rpc GetSimilarEvents(stats.messages.SimilarEventsRequestProto)
-     returns (stream stats.messages.RecommendedEventProto);
+    rpc GetSimilarEvents(stats.message.request.SimilarEventsRequestProto)
+     returns (stream stats.message.request.RecommendedEventProto);
 
-    rpc GetInteractionsCount(stats.messages.InteractionsCountRequestProto)
-    returns (stream stats.messages.RecommendedEventProto);
+    rpc GetInteractionsCount(stats.message.request.InteractionsCountRequestProto)
+    returns (stream stats.message.request.RecommendedEventProto);
 }
