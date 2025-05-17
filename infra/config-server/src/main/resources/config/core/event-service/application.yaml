@@ -10,6 +10,13 @@ spring:
         format_sql: true
     show_sql: true
 
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        alphanumeric-ids:
+          enabled: true
+
   sql:
     init:
       mode: always
@@ -19,8 +26,6 @@ spring:
     url: jdbc:postgresql://localhost:4432/event-db
     username: event
     password: event
-
-eventServiceName: event-service
 
 resilience4j:
   circuitbreaker:
@@ -33,3 +38,16 @@ resilience4j:
         slidingWindowType: COUNT_BASED
         minimumNumberOfCalls: 5
         automaticTransitionFromOpenToHalfOpenEnabled: true
+
+grpc:
+  client:
+    analyzer:
+      address: 'discovery:///analyzer'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    collector:
+      address: 'discovery:///collector'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext

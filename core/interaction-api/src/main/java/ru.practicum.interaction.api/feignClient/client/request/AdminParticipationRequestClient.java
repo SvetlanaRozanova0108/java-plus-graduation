@@ -29,7 +29,7 @@ public interface AdminParticipationRequestClient {
 
     @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "setStatusRequestFallback")
     @PutMapping("/status/{id}/{status}")
-    ParticipationRequestDto setStatusRequest(@PathVariable Long id, @PathVariable Status status)  throws FeignException;
+    boolean setStatusRequest(@PathVariable Long id, @PathVariable Status status)  throws FeignException;
 
     @GetMapping("/event/{eventId}")
     default List<ParticipationRequestDto> findAllByEventIdFallback(Long eventId, Throwable throwable) {

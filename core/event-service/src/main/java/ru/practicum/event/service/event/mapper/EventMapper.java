@@ -1,6 +1,8 @@
 package ru.practicum.event.service.event.mapper;
 
 import lombok.experimental.UtilityClass;
+import ru.practicum.interaction.api.dto.user.UserDto;
+import ru.practicum.interaction.api.dto.user.UserShortDto;
 import ru.practicum.interaction.api.enums.event.State;
 import ru.practicum.event.service.category.mapper.CategoryMapper;
 import ru.practicum.event.service.category.model.Category;
@@ -35,7 +37,7 @@ public class EventMapper {
                 .build();
     }
 
-    public EventFullDto mapToFullDto(Event event, Long views) {
+    public EventFullDto mapToFullDto(Event event, Double rating, UserDto userDto) {
         return EventFullDto.builder()
                 .id(event.getId())
                 .annotation(event.getAnnotation())
@@ -45,10 +47,13 @@ public class EventMapper {
                 .publishedOn(event.getPublishedOn())
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
-                .initiator(event.getInitiatorId())
+                .initiator(UserShortDto.builder()
+                        .name(userDto.getName())
+                        .id(userDto.getId())
+                        .build().getId())
                 .location(Location.builder().lat(event.getLat()).lon(event.getLon()).build())
                 .paid(event.getPaid())
-                .views(views)
+                .rating(rating)
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.getRequestModeration())
                 .state(event.getState())
@@ -57,7 +62,7 @@ public class EventMapper {
                 .build();
     }
 
-    public EventShortDto mapToShortDto(Event event, Long views) {
+    public EventShortDto mapToShortDto(Event event, Double rating, UserDto userDto) {
         return EventShortDto.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
@@ -65,10 +70,13 @@ public class EventMapper {
                 .eventDate(event.getEventDate())
                 .publishedOn(event.getPublishedOn())
                 .id(event.getId())
-                .initiator(event.getInitiatorId())
+                .initiator(UserShortDto.builder()
+                        .id(userDto.getId())
+                        .name(userDto.getName())
+                        .build().getId())
                 .paid(event.getPaid())
                 .title(event.getTitle())
-                .views(views)
+                .rating(rating)
                 .commenting(event.getCommenting())
                 .build();
     }

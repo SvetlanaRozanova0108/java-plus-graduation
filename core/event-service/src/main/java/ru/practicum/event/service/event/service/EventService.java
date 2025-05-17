@@ -19,7 +19,7 @@ public interface EventService {
 
     List<EventShortDto> getPublicEventsByFilter(HttpServletRequest httpServletRequest, EventPublicFilter inputFilter);
 
-    EventFullDto getPublicEventById(HttpServletRequest httpServletRequest, Long id);
+    EventFullDto getPublicEventById(Long userId, Long id);
 
     List<EventFullDto> getEventsForAdmin(EventAdminFilter admin);
 
@@ -34,4 +34,8 @@ public interface EventService {
     void setConfirmedRequests(Long eventId, Integer count);
 
     EventFullDto getAdminEventById(@Positive Long id);
+
+    List<EventShortDto> getEventsRecommendations(Long userId, int maxResults);
+
+    void addLikeToEvent(Long eventId, Long userId);
 }

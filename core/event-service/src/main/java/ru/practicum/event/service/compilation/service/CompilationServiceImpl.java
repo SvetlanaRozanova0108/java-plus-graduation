@@ -16,8 +16,9 @@ import ru.practicum.interaction.api.dto.compilation.NewCompilationDto;
 import ru.practicum.interaction.api.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.interaction.api.dto.event.EventShortDto;
 import ru.practicum.interaction.api.dto.stats.StatsDto;
+import ru.practicum.interaction.api.dto.user.UserDto;
 import ru.practicum.interaction.api.exception.NotFoundException;
-import ru.practicum.interaction.api.feignClient.client.stat.StatClient;
+import ru.practicum.interaction.api.feignClient.client.user.UserClient;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,7 +33,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
-    private final StatClient statClient;
+    private final UserClient userClient;
 
     private final String COMPILATION_NOT_FOUND = "Подборка не найдена.";
 
@@ -128,21 +129,16 @@ public class CompilationServiceImpl implements CompilationService {
         if (events.isEmpty()) {
             return Collections.emptyList();
         }
-        LocalDateTime minTime = events.stream().map(Event::getCreatedOn).min(Comparator.comparing(Function.identity())).get();
-        List<String> urisList = events.stream().map(event -> "/events/" + event.getId()).toList();
+        List<Long> userIds = events.stream()
+                .map(Event::getInitiatorId)
+                .distinct()
+                .toList();
+        Map<Long, UserDto> mapUserDto = userClient.getAllUsers(userIds, 0, userIds.size())
+                .stream()
+                .collect(Collectors.toMap(UserDto::getId, Function.identity()));
 
-        List<StatsDto> statsList = statClient.getStats(minTime.minusSeconds(1), LocalDateTime.now(), urisList, false);
-        return events.stream().map(event -> {
-                    Optional<StatsDto> result = statsList.stream()
-                            .filter(statsDto -> statsDto.getUri().equals("/events/" + event.getId()))
-                            .findFirst();
-                    if (result.isPresent()) {
-                        return EventMapper.mapToShortDto(event, result.get().getHits());
-                    } else {
-                        return EventMapper.mapToShortDto(event, 0L);
-                    }
-                })
-                .collect(Collectors.toList());
+        return events.stream().map(event ->
+                EventMapper.mapToShortDto(event, 0d, mapUserDto.getOrDefault(event.getInitiatorId(), UserDto.builder().id(event.getInitiatorId()).name("UNKNOWN").build()))).toList();
     }
 }
 

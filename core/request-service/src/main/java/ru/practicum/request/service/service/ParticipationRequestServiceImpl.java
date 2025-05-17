@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.ewm.grpc.stats.ActionTypeProto;
 import ru.practicum.interaction.api.enums.request.Status;
 import ru.practicum.interaction.api.exception.*;
 import ru.practicum.interaction.api.exception.ValidationException;
@@ -14,7 +15,9 @@ import ru.practicum.request.service.repository.ParticipationRequestRepository;
 import ru.practicum.interaction.api.dto.request.ParticipationRequestDto;
 import ru.practicum.interaction.api.feignClient.client.event.AdminEventClient;
 import ru.practicum.interaction.api.enums.event.State;
+import ru.practicum.stats.client.UserActionClient;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +32,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     private final ParticipationRequestRepository requestRepository;
     private final UserClient userClient;
     private final AdminEventClient adminEventClient;
+    private final UserActionClient userActionClient;
 
     @Transactional
     @Override
@@ -65,7 +69,10 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                 .eventId(eventId)
                 .status(status)
                 .build();
-        return ParticipationRequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
+        ParticipationRequestDto participationRequestDto = ParticipationRequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
+        userActionClient.collectUserAction(eventId, userId, ActionTypeProto.ACTION_REGISTER, Instant.now());
+
+        return participationRequestDto;
     }
 
     @Transactional
