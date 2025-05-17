@@ -6,7 +6,6 @@ import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.common.serialization.Serializer;
-import ru.practicum.ewm.serializer.SerializationException;
 
 import java.io.ByteArrayOutputStream;
 
@@ -19,21 +18,15 @@ public class AvroSerializer implements Serializer<SpecificRecordBase> {
         }
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-
             DatumWriter<SpecificRecordBase> datumWriter = new SpecificDatumWriter<>(data.getSchema());
-
             BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(outputStream, null);
-
             datumWriter.write(data, encoder);
-
             encoder.flush();
-
             outputStream.close();
-
             return outputStream.toByteArray();
 
         } catch (Exception e) {
-            throw new SerializationException("Ошибка сериализации.");
+            throw new ru.practicum.ewm.serializer.SerializationException("Ошибка сериализации.");
         }
     }
 }
