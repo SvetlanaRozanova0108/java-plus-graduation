@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.UserActionClient;
-import ru.practicum.ewm.grpc.stats.ActionTypeProto;
+import ru.practicum.ewm.grpc.stats.event.ActionTypeProto;
 import ru.practicum.interaction.api.enums.request.Status;
 import ru.practicum.interaction.api.exception.*;
 import ru.practicum.interaction.api.exception.ValidationException;

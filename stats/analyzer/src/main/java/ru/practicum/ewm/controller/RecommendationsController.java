@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import ru.practicum.ewm.handler.RecommendationsHandler;
 import ru.practicum.ewm.grpc.stats.controller.RecommendationsControllerGrpc;
-import  ru.practicum.ewm.grpc.stats.*;
+import  ru.practicum.ewm.grpc.stats.event.*;
 
 @Slf4j
 @GrpcService

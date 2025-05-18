@@ -9,10 +9,10 @@ import ru.practicum.ewm.model.EventSimilarity;
 import ru.practicum.ewm.model.UserAction;
 import ru.practicum.ewm.repository.EventSimilarityRepository;
 import ru.practicum.ewm.repository.UserActionRepository;
-import ru.practicum.ewm.grpc.stats.InteractionsCountRequestProto;
-import ru.practicum.ewm.grpc.stats.RecommendedEventProto;
-import ru.practicum.ewm.grpc.stats.SimilarEventsRequestProto;
-import ru.practicum.ewm.grpc.stats.UserPredictionsRequestProto;
+import ru.practicum.ewm.grpc.stats.event.InteractionsCountRequestProto;
+import ru.practicum.ewm.grpc.stats.event.RecommendedEventProto;
+import ru.practicum.ewm.grpc.stats.event.SimilarEventsRequestProto;
+import ru.practicum.ewm.grpc.stats.event.UserPredictionsRequestProto;
 
 
 import java.util.*;

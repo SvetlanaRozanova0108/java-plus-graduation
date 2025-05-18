@@ -1,5 +1,5 @@
 package ru.practicum.ewm.handler;
-import ru.practicum.ewm.grpc.stats.UserActionProto;
+import ru.practicum.ewm.grpc.stats.event.UserActionProto;
 
 public interface UserActionHandler {
 

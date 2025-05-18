@@ -3,9 +3,9 @@ package ru.practicum.ewm;
 import com.google.protobuf.Timestamp;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
-import ru.practicum.ewm.grpc.stats.ActionTypeProto;
-import ru.practicum.ewm.grpc.stats.UserActionProto;
 import ru.practicum.ewm.grpc.stats.controller.UserActionControllerGrpc;
+import ru.practicum.ewm.grpc.stats.event.ActionTypeProto;
+import ru.practicum.ewm.grpc.stats.event.UserActionProto;
 
 import java.time.Instant;
 
