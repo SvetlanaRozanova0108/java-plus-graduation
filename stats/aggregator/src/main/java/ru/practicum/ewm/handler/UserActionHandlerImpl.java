@@ -15,8 +15,12 @@ import java.util.stream.Collectors;
 @Component
 public class UserActionHandlerImpl implements UserActionHandler {
 
+    /// вклад пользователей по событию
     private final Map<Long, Map<Long, Double>> eventActions = new HashMap<>();
+
+    /// суммарный показатель по событию
     private final Map<Long, Double> eventWeights = new HashMap<>();
+    /// пространство событий
     private final Map<Long, Map<Long, Double>> minWeightsSum = new HashMap<>();
 
     @Value("${application.action-weight.view}")
@@ -39,7 +43,8 @@ public class UserActionHandlerImpl implements UserActionHandler {
                     .filter(id -> !Objects.equals(id, eventId))
                     .collect(Collectors.toSet());
 
-            anotherEvents.forEach(ae -> {
+            for (Long ae : anotherEvents) {
+
                 double result = getMinWeightsSum(eventId, ae, diff, userId) /
                         (Math.sqrt(eventWeights.get(eventId)) * Math.sqrt(eventWeights.get(ae)));
 
@@ -51,7 +56,7 @@ public class UserActionHandlerImpl implements UserActionHandler {
                             .setTimestamp(Instant.now())
                             .build());
                 }
-            });
+            }
         }
         return eventSimilarity;
     }
@@ -65,8 +70,10 @@ public class UserActionHandlerImpl implements UserActionHandler {
         Double oldWeight = userActions.get(userId);
 
         if (oldWeight == null || result > oldWeight) {
+
             userActions.put(userId, result);
             eventActions.put(eventId, userActions);
+
             double diff = oldWeight == null ? result : result - oldWeight;
             return diff;
         }

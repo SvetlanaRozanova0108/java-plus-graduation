@@ -46,6 +46,7 @@ public class RecommendationsController extends RecommendationsControllerGrpc.Rec
                                      StreamObserver<RecommendedEventProto> responseObserver) {
         try {
             log.info("Получение мероприятий для каждого пользователя {}", request);
+
             handler.getInteractionsCount(request).forEach(responseObserver::onNext);
             responseObserver.onCompleted();
         } catch (Exception e) {
