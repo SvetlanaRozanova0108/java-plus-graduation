@@ -43,22 +43,40 @@ public class UserActionHandlerImpl implements UserActionHandler {
                     .filter(id -> !Objects.equals(id, eventId))
                     .collect(Collectors.toSet());
 
-            for (Long ae : anotherEvents) {
-
-                double result = getMinWeightsSum(eventId, ae, diff, userId) /
+            anotherEvents.forEach(ae -> {
+                double sim = getMinWeightsSum(eventId, ae, diff, userId) /
                         (Math.sqrt(eventWeights.get(eventId)) * Math.sqrt(eventWeights.get(ae)));
 
-                if (result > 0.0) {
+                if (sim > 0.0) {
                     eventSimilarity.add(EventSimilarityAvro.newBuilder()
                             .setEventA(Math.min(eventId, ae))
                             .setEventB(Math.max(eventId, ae))
-                            .setScore(result)
+                            .setScore(sim)
                             .setTimestamp(Instant.now())
                             .build());
                 }
-            }
+            });
         }
+
         return eventSimilarity;
+
+//            for (Long ae : anotherEvents) {
+//
+//                double result = getMinWeightsSum(eventId, ae, diff, userId) /
+//                        (Math.sqrt(eventWeights.get(eventId)) * Math.sqrt(eventWeights.get(ae)));
+//
+//                if (result > 0.0) {
+//                    eventSimilarity.add(EventSimilarityAvro.newBuilder()
+//                            .setEventA(Math.min(eventId, ae))
+//                            .setEventB(Math.max(eventId, ae))
+//                            .setScore(result)
+//                            .setTimestamp(Instant.now())
+//                            .build());
+//                }
+//            }
+//
+//        return eventSimilarity;
+
     }
 
     private Double updateEventAction(UserActionAvro userActionAvro) {
