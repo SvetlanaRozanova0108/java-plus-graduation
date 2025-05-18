@@ -2,7 +2,7 @@ syntax = "proto3";
 package stats.message.event;
 
 option java_multiple_files = true;
-option java_package = "ru.practicum.ewm.grpc.stats";
+option java_package = "ru.practicum.ewm.grpc.stats.event";
 
 import "google/protobuf/timestamp.proto";
 

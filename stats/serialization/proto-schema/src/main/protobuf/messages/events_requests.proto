@@ -2,9 +2,7 @@ syntax = "proto3";
 package stats.message.request;
 
 option java_multiple_files = true;
-option java_package = "ru.practicum.ewm.grpc.stats";
-
-import "google/protobuf/timestamp.proto";
+option java_package = "ru.practicum.ewm.grpc.stats.event";
 
 message UserPredictionsRequestProto {
     int64 user_id = 1;
