@@ -29,8 +29,17 @@ public interface UserClient {
     @DeleteMapping("/{userId}")
     void deleteUser(@PathVariable Long userId) throws FeignException;
 
+    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "findByIdFallback")
     @GetMapping("/{userId}")
     UserDto findById(@PathVariable Long userId) throws FeignException;
+
+    @GetMapping("/{userId}")
+    default UserDto findByIdFallback(Long userId, Throwable throwable) {
+        return UserDto.builder()
+                .id(userId)
+                .name("UNKNOWN")
+                .build();
+    }
 
     @GetMapping("/admin/{userId}")
     UserDtoForAdmin adminFindById(@PathVariable Long userId) throws FeignException;

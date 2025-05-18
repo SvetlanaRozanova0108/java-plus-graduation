@@ -62,6 +62,9 @@ public class EventServiceImpl implements EventService {
         checkFields(eventDto);
         Category category = categoryRepository.findById(eventDto.getCategory())
                 .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND));
+        if (userDto.getName().equals("UNKNOWN")) {
+            throw new ServerErrorException("Server Error Exception.");
+        }
         if (eventDto.getCommenting() == null) {
             eventDto.setCommenting(true);
         }
