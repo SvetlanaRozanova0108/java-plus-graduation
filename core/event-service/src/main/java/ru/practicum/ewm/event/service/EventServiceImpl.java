@@ -105,6 +105,7 @@ public class EventServiceImpl implements EventService {
 
         UserDto userDto = userClient.findById(userId);
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND));
+
         if (!Objects.equals(event.getInitiatorId(), userId)) {
             throw new ValidationException("Можно просмотреть только своё событие");
         }
@@ -219,7 +220,6 @@ public class EventServiceImpl implements EventService {
 
             r.setConfirmedRequests(requests != null ? requests.size() : 0);
         });
-
         return resultList;
     }
 
@@ -247,6 +247,7 @@ public class EventServiceImpl implements EventService {
     // admin Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
     @Override
     public List<EventFullDto> getEventsForAdmin(EventAdminFilter input) {
+
         Sort sort = Sort.by("createdOn");
         Pageable pageable = PageRequest.of(input.getFrom() / input.getSize(), input.getSize(), sort);
         BooleanExpression conditions;
