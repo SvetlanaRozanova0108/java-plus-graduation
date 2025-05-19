@@ -25,7 +25,7 @@ spring:
     bootstrap-server: localhost:9092
     consumer:
       user-action-client-id: UserActionClient
-      user-action-group-id: UserActionGroup
+      user-action-group-id: UserActionGroup.Analyzer
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value-deserializer: ru.practicum.ewm.deserializer.UserActionDeserializer
       enable-auto-commit: false

@@ -8,7 +8,7 @@ spring:
 
     consumer:
       user-action-client-id: UserActionClient
-      user-action-group-id: UserActionGroup
+      user-action-group-id: UserActionGroup.Aggregator
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value-deserializer: ru.practicum.ewm.deserializer.UserActionDeserializer
       enable-auto-commit: false
