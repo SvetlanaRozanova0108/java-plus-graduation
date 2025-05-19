@@ -17,7 +17,7 @@ public interface AdminEventClient {
     EventFullDto updateEvent(@PositiveOrZero @PathVariable Long eventId,
                              @Validated(UpdateObject.class) @RequestBody UpdateEventAdminRequest updateEventAdminRequest) throws FeignException;
 
-    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "findByIdFallback")
+
     @GetMapping("/{id}")
     EventFullDto findById(@PathVariable("id") @Positive Long id) throws FeignException;
 

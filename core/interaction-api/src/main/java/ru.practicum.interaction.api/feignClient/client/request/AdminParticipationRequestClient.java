@@ -27,7 +27,6 @@ public interface AdminParticipationRequestClient {
     @GetMapping("/event/confirmed/{eventId}")
     Map<Long, List<ParticipationRequestDto>> findAllConfirmedByEventId(@PathVariable List<Long> eventId) throws FeignException;
 
-    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "setStatusRequestFallback")
     @PutMapping("/status/{id}/{status}")
     boolean setStatusRequest(@PathVariable Long id, @PathVariable Status status)  throws FeignException;
 
@@ -44,11 +43,6 @@ public interface AdminParticipationRequestClient {
     @GetMapping("/event/confirmed/{eventId}")
     default Map<Long, List<ParticipationRequestDto>> findAllConfirmedByEventIdFallback(List<Long> eventId, Throwable throwable) {
         return new HashMap<>();
-    }
-
-    @PutMapping("/status/{id}/{status}")
-    default ParticipationRequestDto setStatusRequestFallback(Long id, Status status) {
-        throw new ServerErrorException("Server Error Exception.");
     }
 }
 
