@@ -70,6 +70,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                 .status(status)
                 .build();
         ParticipationRequestDto participationRequestDto = ParticipationRequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
+
         userActionClient.collectUserAction(eventId, userId, ActionTypeProto.ACTION_REGISTER, Instant.now());
 
         return participationRequestDto;
