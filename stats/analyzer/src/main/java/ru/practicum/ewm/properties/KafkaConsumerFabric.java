@@ -34,7 +34,6 @@ public class KafkaConsumerFabric {
     private String similarityDeserializer;
     @Value("${spring.kafka.consumer.enable-auto-commit}")
     private boolean enableAutoCommit;
-//    private final Environment environment;
 
     @Bean
     public Consumer<Long, UserActionAvro> userActionConsumerProperties() {

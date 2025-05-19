@@ -38,10 +38,13 @@ public class AggregatorService  implements Runnable {
 
             while (true) {
                 ConsumerRecords<Long, UserActionAvro> records = consumer.poll(Duration.ofMillis(pollTimeout));
-
+                if (records.count() > 0) {
+                    log.info("Получено " + records.count() + " сообщений.");
+                }
                 for (ConsumerRecord<Long, UserActionAvro> record : records) {
                     UserActionAvro userActionAvro = record.value();
                     List<EventSimilarityAvro> result = handler.calculateSimilarity(userActionAvro);
+                    log.info("Подготовлено " + result.size() + " сообщений.");
                     producer.send(result, topicEventSimilarity);
                     producer.flush();
                 }

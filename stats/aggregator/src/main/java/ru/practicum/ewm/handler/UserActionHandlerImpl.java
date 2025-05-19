@@ -34,7 +34,7 @@ public class UserActionHandlerImpl implements UserActionHandler {
         List<EventSimilarityAvro> eventSimilarity = new ArrayList<>();
         Long userId = userActionAvro.getUserId();
         Long eventId = userActionAvro.getEventId();
-
+        log.info("Расчитываем сообщение " + userActionAvro);
         double diff = updateEventAction(userActionAvro);
         if (diff > 0) {
             eventWeights.merge(eventId, diff, Double::sum);
@@ -42,41 +42,22 @@ public class UserActionHandlerImpl implements UserActionHandler {
             Set<Long> anotherEvents = eventActions.keySet().stream()
                     .filter(id -> !Objects.equals(id, eventId))
                     .collect(Collectors.toSet());
-
-            anotherEvents.forEach(ae -> {
-                double sim = getMinWeightsSum(eventId, ae, diff, userId) /
+            log.info("Расчитываем схожесть с " + anotherEvents.size());
+            for (Long ae : anotherEvents) {
+                double result = getMinWeightsSum(eventId, ae, diff, userId) /
                         (Math.sqrt(eventWeights.get(eventId)) * Math.sqrt(eventWeights.get(ae)));
 
-                if (sim > 0.0) {
+                if (result > 0.0) {
                     eventSimilarity.add(EventSimilarityAvro.newBuilder()
                             .setEventA(Math.min(eventId, ae))
                             .setEventB(Math.max(eventId, ae))
-                            .setScore(sim)
+                            .setScore(result)
                             .setTimestamp(Instant.now())
                             .build());
                 }
-            });
+            }
         }
-
         return eventSimilarity;
-
-//            for (Long ae : anotherEvents) {
-//
-//                double result = getMinWeightsSum(eventId, ae, diff, userId) /
-//                        (Math.sqrt(eventWeights.get(eventId)) * Math.sqrt(eventWeights.get(ae)));
-//
-//                if (result > 0.0) {
-//                    eventSimilarity.add(EventSimilarityAvro.newBuilder()
-//                            .setEventA(Math.min(eventId, ae))
-//                            .setEventB(Math.max(eventId, ae))
-//                            .setScore(result)
-//                            .setTimestamp(Instant.now())
-//                            .build());
-//                }
-//            }
-//
-//        return eventSimilarity;
-
     }
 
     private Double updateEventAction(UserActionAvro userActionAvro) {
