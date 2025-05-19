@@ -1,7 +1,8 @@
 grpc:
   server:
-    port: 0
-
+    port: 9091
+    security:
+      enabled: false
 spring:
   jpa:
     hibernate:

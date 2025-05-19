@@ -11,6 +11,7 @@ import java.time.Instant;
 
 @Service
 public class UserActionClient {
+
     private final UserActionControllerGrpc.UserActionControllerBlockingStub userActionStub;
 
     public UserActionClient(@GrpcClient("collector") UserActionControllerGrpc.UserActionControllerBlockingStub client) {
