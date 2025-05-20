@@ -24,4 +24,6 @@ public interface ParticipationRequestService {
     Map<Long, List<ParticipationRequestDto>> findAllConfirmedByEventId(List<Long> eventId);
 
     ParticipationRequestDto setStatusRequest(Long id, Status status);
+
+    boolean checkExistsByEventIdAndRequesterIdAndStatus(Long eventId, Long userId, Status status);
 }

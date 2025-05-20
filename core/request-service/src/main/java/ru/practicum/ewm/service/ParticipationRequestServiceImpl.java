@@ -159,6 +159,11 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         return ParticipationRequestMapper.toParticipationRequestDto(result);
     }
 
+    @Override
+    public boolean checkExistsByEventIdAndRequesterIdAndStatus(Long eventId, Long userId, Status status) {
+        return requestRepository.existsByEventIdAndRequesterIdAndStatus(eventId, userId, status);
+    }
+
     private void checkExistsUserById(Long userId) {
         if (userClient.findById(userId)== null) {
             throw new NotFoundException("Пользователь c id: " + userId + " не найден");

@@ -483,7 +483,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void addLikeToEvent(Long eventId, Long userId) {
-        if (!adminRequestClient.setStatusRequest(eventId, Status.CONFIRMED)) {
+        if (!adminRequestClient.checkExistStatusRequest(eventId, userId, Status.CONFIRMED)) {
             throw new ValidationException("Пользователь не участвует в этом событии.");
         }
         userActionClient.collectUserAction(eventId, userId, ActionTypeProto.ACTION_LIKE, Instant.now());

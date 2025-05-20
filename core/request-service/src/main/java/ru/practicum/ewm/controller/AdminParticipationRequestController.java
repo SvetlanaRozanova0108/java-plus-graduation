@@ -40,4 +40,10 @@ public class AdminParticipationRequestController {
     public ParticipationRequestDto setStatusRequest(@PathVariable Long id, @PathVariable Status status) {
         return requestService.setStatusRequest(id, status);
     }
+
+    @GetMapping("/{eventId}/check-user-confirmed/{userId}")
+    public boolean checkExistsByEventIdAndRequesterIdAndStatus(@PathVariable Long eventId,@PathVariable Long userId,
+                                                               @RequestParam Status status) {
+        return requestService.checkExistsByEventIdAndRequesterIdAndStatus(eventId, userId, status);
+    }
 }
