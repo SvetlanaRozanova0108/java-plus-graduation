@@ -62,6 +62,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         if (participantLimit.equals(0) || !event.getRequestModeration()) {
             status = Status.CONFIRMED;
             event.setConfirmedRequests(++confirmedRequests);
+            adminEventClient.setConfirmedRequests(eventId, ++confirmedRequests);
         } else
             status = Status.PENDING;
         ParticipationRequest participationRequest = ParticipationRequest.builder()

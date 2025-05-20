@@ -19,7 +19,6 @@ public interface AdminParticipationRequestClient {
     @GetMapping("/event/{eventId}")
     List<ParticipationRequestDto> findAllByEventId(@PathVariable Long eventId) throws FeignException;
 
-    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "findAllByIdsFallback")
     @GetMapping("/{ids}")
     List<ParticipationRequestDto> findAllByIds(@PathVariable List<Long> ids) throws FeignException;
 
@@ -32,11 +31,6 @@ public interface AdminParticipationRequestClient {
 
     @GetMapping("/event/{eventId}")
     default List<ParticipationRequestDto> findAllByEventIdFallback(Long eventId, Throwable throwable) {
-        return new ArrayList<>();
-    }
-
-    @GetMapping("/{ids}")
-    default List<ParticipationRequestDto> findAllByIdsFallback(List<Long> ids, Throwable throwable) {
         return new ArrayList<>();
     }
 
