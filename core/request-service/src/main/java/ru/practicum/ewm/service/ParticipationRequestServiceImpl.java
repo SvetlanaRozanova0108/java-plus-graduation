@@ -55,13 +55,12 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         }
         Integer participantLimit = event.getParticipantLimit();
         Integer confirmedRequests = event.getConfirmedRequests();
-        if (!participantLimit.equals(0) && participantLimit.equals(confirmedRequests)) {
+        if (!participantLimit.equals(0) && (participantLimit <= confirmedRequests)) {
             throw new ConflictDataException("Лимит запросов на участие в событии уже достигнут");
         }
         Status status;
         if (participantLimit.equals(0) || !event.getRequestModeration()) {
             status = Status.CONFIRMED;
-            event.setConfirmedRequests(++confirmedRequests);
             adminEventClient.setConfirmedRequests(eventId, ++confirmedRequests);
         } else
             status = Status.PENDING;
