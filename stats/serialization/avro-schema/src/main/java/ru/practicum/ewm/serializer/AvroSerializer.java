@@ -26,7 +26,7 @@ public class AvroSerializer implements Serializer<SpecificRecordBase> {
             return outputStream.toByteArray();
 
         } catch (Exception e) {
-            throw new SerializationException("Ошибка сериализации.");
+            throw new SerializationException("Ошибка сериализации топика " + topic);
         }
     }
 }

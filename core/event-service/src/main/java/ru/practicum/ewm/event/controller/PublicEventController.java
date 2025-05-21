@@ -6,6 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.event.service.EventService;
 import ru.practicum.interaction.api.dto.event.EventFullDto;
@@ -23,9 +24,11 @@ import static ru.practicum.interaction.api.utils.date.DateTimeFormat.TIME_PATTER
 @AllArgsConstructor
 @RestController
 @RequestMapping("/events")
+@Validated
 public class PublicEventController {
 
     private final EventService eventService;
+    private final String AuthHeaderKey = "X-EWM-USER-ID";
 
     @GetMapping
     public List<EventShortDto>
@@ -68,7 +71,7 @@ public class PublicEventController {
     }
 
     @GetMapping("/{id}")
-    public EventFullDto getEventById(@RequestHeader("X-EWM-USER-ID") long userId, @PathVariable("id") @Positive Long id) {
+    public EventFullDto getEventById(@RequestHeader(AuthHeaderKey) long userId, @PathVariable("id") @Positive Long id) {
         log.info("Получение подробной информации об опубликованном событии по его идентификатору.");
 
         try {
@@ -80,13 +83,13 @@ public class PublicEventController {
     }
 
     @GetMapping("/recommendations")
-    public List<EventShortDto> getEventsRecommendations(@RequestHeader("X-EWM-USER-ID") long userId,
+    public List<EventShortDto> getEventsRecommendations(@RequestHeader(AuthHeaderKey) long userId,
                                                         @RequestParam(defaultValue = "10") int maxResults) {
         return eventService.getEventsRecommendations(userId, maxResults);
     }
 
     @PutMapping("/{eventId}/like")
-    public void addLikeToEvent(@PathVariable Long eventId, @RequestHeader("X-EWM-USER-ID") long userId) {
+    public void addLikeToEvent(@PathVariable Long eventId, @RequestHeader(AuthHeaderKey) long userId) {
         eventService.addLikeToEvent(eventId, userId);
     }
 }

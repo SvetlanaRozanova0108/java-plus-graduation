@@ -29,7 +29,7 @@ public abstract class AvroDeserializer<T extends SpecificRecordBase> implements 
             return null;
 
         } catch (Exception e) {
-            throw new SerializationException("Ошибка десериализации.");
+            throw new SerializationException("Ошибка десериализации топика " + topic);
         }
     }
 }

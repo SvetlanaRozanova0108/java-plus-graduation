@@ -1,6 +1,5 @@
 package ru.practicum.interaction.api.feignClient.client.event;
 import feign.FeignException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.cloud.openfeign.FeignClient;
