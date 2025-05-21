@@ -17,7 +17,6 @@ import java.util.List;
 @FeignClient(name = "user-service", path = "/admin/users")
 public interface UserClient {
 
-    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "getAllUsersFallback")
     @GetMapping
     List<UserDto> getAllUsers(@RequestParam(defaultValue = "") List<Long> ids,
                               @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
@@ -29,14 +28,18 @@ public interface UserClient {
     @DeleteMapping("/{userId}")
     void deleteUser(@PathVariable Long userId) throws FeignException;
 
+    @CircuitBreaker(name = "defaultBreaker", fallbackMethod = "findByIdFallback")
     @GetMapping("/{userId}")
     UserDto findById(@PathVariable Long userId) throws FeignException;
 
+    @GetMapping("/{userId}")
+    default UserDto findByIdFallback(Long userId, Throwable throwable) {
+        return UserDto.builder()
+                .id(userId)
+                .name("UNKNOWN")
+                .build();
+    }
+
     @GetMapping("/admin/{userId}")
     UserDtoForAdmin adminFindById(@PathVariable Long userId) throws FeignException;
-
-    @GetMapping
-    default List<UserDto> getAllUsersFallback(List<Long> ids, Integer from, Integer size, Throwable throwable) {
-        return Collections.emptyList();
-    }
 }
