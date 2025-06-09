@@ -1,3 +1,18 @@
+Java-plus-graduation (усовершенствование Explore With Me) — Backend-афиша позволяет предложить какое-либо событие от выставки до похода в кино, и собрать компанию для участия в нём на основе интересов пользователей.
+
+Технологический стек:
+- Java 21
+- Spring Boot
+- PostgreSQL
+- JPA
+- Hibernate
+- Maven
+- Docker
+- Spring Cloud
+- Config Server
+- Eureka
+- Gateway.
+ 
 ### Архитектура
 ### Приложение разделено на 5 микросервисов:
 1. user-service - обрабатывает запросы пользователей
